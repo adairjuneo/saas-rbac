@@ -8,8 +8,8 @@
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.3.3",
+    "prettier": "3.2.5",
+    "turbo": "2.3.3",
     "typescript": "5.5.4"
   },
   "engines": {
