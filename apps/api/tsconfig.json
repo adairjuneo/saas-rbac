@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@saas-rbac/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "./build",
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+  },
+  "include": [
+    "./src/**/*",
+    "./src/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist"
+  ]
+}
