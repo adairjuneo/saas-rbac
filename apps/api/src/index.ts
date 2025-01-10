@@ -1,6 +1,6 @@
 import { defineAbilityFor } from '@saas-rbac/auth';
 
-const ability = defineAbilityFor({ role: 'ADMIN' });
+const ability = defineAbilityFor({ id: '', role: 'ADMIN' });
 
 const userCanInviteSomoneElse = ability.can('get', 'User');
 const userCanDeleteOtherUsers = ability.can('delete', 'User');
