@@ -1,6 +1,8 @@
-import { ability } from '@saas-rbac/auth';
+import { defineAbilityFor } from '@saas-rbac/auth';
 
-const userCanInviteSomoneElse = ability.can('invite', 'User');
+const ability = defineAbilityFor({ role: 'ADMIN' });
+
+const userCanInviteSomoneElse = ability.can('get', 'User');
 const userCanDeleteOtherUsers = ability.can('delete', 'User');
 
 console.info(userCanInviteSomoneElse);

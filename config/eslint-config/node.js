@@ -40,7 +40,10 @@ export const config = [
       'no-useless-concat': 'error',
       'no-useless-return': 'error',
       'no-constant-condition': 'warn',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: 'req|res|next|__' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: 'req|res|next|__' },
+      ],
       // Enhance Readability
       indent: ['error', 2, { SwitchCase: 1 }],
       'no-mixed-spaces-and-tabs': 'warn',
@@ -56,7 +59,10 @@ export const config = [
       'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
       'no-whitespace-before-property': 'error',
       'nonblock-statement-body-position': 'error',
-      'object-property-newline': ['error', { allowAllPropertiesOnSameLine: true }],
+      'object-property-newline': [
+        'error',
+        { allowAllPropertiesOnSameLine: true },
+      ],
     },
   },
 ];
