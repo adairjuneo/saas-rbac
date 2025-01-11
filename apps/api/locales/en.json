@@ -1,0 +1,5 @@
+{
+  "validators": {
+    "minLength6": "Must be a min 6 characters."
+  }
+}
