@@ -7,17 +7,22 @@
   "scripts": {
     "dev": "tsx watch --env-file=.env src/server.ts",
     "start": "node --env-file=.env build/server.js",
-    "build": "tsup src --out-dir build"
+    "build": "tsup src --out-dir build",
+    "test": "vitest run --dir src",
+    "test:watch": "vitest --dir src"
   },
   "keywords": [],
   "author": "devjuneo.com",
   "license": "ISC",
   "description": "SAAS RBAC Api",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
-    "@faker-js/faker": "9.3.0",
     "@fastify/cookie": "11.0.2",
     "@fastify/cors": "10.0.2",
     "@fastify/jwt": "9.0.2",
+    "@prisma/client": "6.2.1",
     "@saas-rbac/auth": "*",
     "bcryptjs": "2.4.3",
     "chalk": "5.4.1",
@@ -26,12 +31,18 @@
     "zod": "3.24.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "9.3.0",
     "@saas-rbac/eslint-config": "*",
     "@saas-rbac/prettier-config": "*",
     "@saas-rbac/typescript-config": "*",
+    "@types/bcryptjs": "2.4.6",
     "@types/node": "22.10.5",
+    "prisma": "6.2.1",
     "tsup": "8.3.5",
     "tsx": "4.19.2",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "vite": "5.4.11",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "2.1.8"
   }
 }

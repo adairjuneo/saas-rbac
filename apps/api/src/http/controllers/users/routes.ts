@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 
+import { createUser } from './create-user.controller';
+
 export const usersRoutes = async (app: FastifyInstance) => {
-  app.get('/', (_, reply) => {
-    reply.status(200).send('Users routes.');
-  });
+  app.register(createUser);
 };

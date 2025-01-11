@@ -4,7 +4,7 @@ import { fastify } from 'fastify';
 import {
   serializerCompiler,
   validatorCompiler,
-  ZodTypeProvider,
+  type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 
 import { env } from '@/env';
@@ -17,7 +17,7 @@ app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
 
 app.register(fastifyCors);
-app.register(appRoutes, { prefix: '/v1/api' });
+app.register(appRoutes, { prefix: '/api/v1' });
 
 app
   .listen({

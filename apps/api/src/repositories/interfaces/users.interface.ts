@@ -1,5 +1,7 @@
+import type { Prisma, User } from '@prisma/client';
+
 export interface IUsersRepository {
-  create(data: object): Promise<void>;
-  findById(id: string): Promise<void>;
-  findByEmail(email: string): Promise<void>;
+  create(data: Prisma.UserCreateInput): Promise<User>;
+  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
 }

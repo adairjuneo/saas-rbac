@@ -4,13 +4,11 @@ import { z } from 'zod';
 const envSchema = z.object({
   NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
   PORT: z.coerce.number().default(3333),
-  // DATABASE_URL: z.string().min(1),
-  // JWT_SECRET: z.string().min(1),
-  // PAGINATION_PAGE_SIZE: z.coerce.number().max(20),
-  // AUTH_SALT_PASSWORD_HASH: z.coerce.number().max(6),
-  // MAX_DISTANCE_IN_KILOMETERS: z.coerce.number().max(1),
-  // AUTH_KEY_EXPIRATION_SECONDS: z.coerce.number().min(120),
-  // MAX_DISTANCE_NEARBY_IN_KILOMETERS: z.coerce.number().max(10),
+  DATABASE_URL: z.string().min(1),
+  JWT_SECRET: z.string().min(1),
+  PAGINATION_PAGE_SIZE: z.coerce.number().max(20),
+  AUTH_SALT_PASSWORD_HASH: z.coerce.number().max(6),
+  AUTH_KEY_EXPIRATION_SECONDS: z.coerce.number().min(120),
 });
 
 const _env = envSchema.safeParse(process.env);

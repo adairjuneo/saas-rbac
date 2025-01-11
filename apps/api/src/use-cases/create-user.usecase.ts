@@ -1,4 +1,9 @@
+import type { User } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
+import { env } from '@/env';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
+import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository';
 
 interface CreateUserUseCaseRequest {
   name: string;
@@ -7,7 +12,7 @@ interface CreateUserUseCaseRequest {
 }
 
 interface CreateUserUseCaseResponse {
-  user: object;
+  user: User;
 }
 
 class CreateUserUseCase {
@@ -18,14 +23,30 @@ class CreateUserUseCase {
   ): Promise<CreateUserUseCaseResponse> {
     const { name, email, password } = data;
 
-    return { user: { name, email, password } };
+    const passwordHash = await bcrypt.hash(
+      password,
+      env.AUTH_SALT_PASSWORD_HASH
+    );
+
+    const userWithSameEmail = await this.usersRepository.findByEmail(email);
+
+    if (userWithSameEmail) {
+      throw new Error('User with same e-mail already exists.');
+    }
+    const user = await this.usersRepository.create({
+      name,
+      email,
+      passwordHash,
+    });
+
+    return { user };
   }
 }
 
 const makeWithPrismaCreateUserUseCase = () => {
-  // const userRepository = new PrismaUsersRepository();
-  // const createUserUseCase = new CreateUserUseCase(userRepository);
-  // return createUserUseCase;
+  const userRepository = new PrismaUsersRepository();
+  const createUserUseCase = new CreateUserUseCase(userRepository);
+  return createUserUseCase;
 };
 
 export { CreateUserUseCase, makeWithPrismaCreateUserUseCase };
