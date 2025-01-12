@@ -1,11 +1,11 @@
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import turboPlugin from 'eslint-plugin-turbo';
-import tseslint from 'typescript-eslint';
 import onlyWarn from 'eslint-plugin-only-warn';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import turboPlugin from 'eslint-plugin-turbo';
 import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 /**
  * A shared ESLint configuration for the repository.

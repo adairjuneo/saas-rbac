@@ -6,21 +6,10 @@
     "rootDir": "./",
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
-    "typeRoots": [
-      "./src/**/*"
-    ]
+    "typeRoots": ["./src/**/*"]
   },
-  "include": [
-    "./src/**/*",
-    "./src/**/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "dist"
-  ]
+  "include": ["./src/**/*", "./src/**/*.d.ts"],
+  "exclude": ["node_modules", "build", "dist"]
 }

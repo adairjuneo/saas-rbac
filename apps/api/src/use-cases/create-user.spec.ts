@@ -2,11 +2,15 @@ import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { InMemoryMembersRepository } from '@/repositories/in-memory/in-memory-members.repository';
+import { InMemoryOrganizationsRepository } from '@/repositories/in-memory/in-memory-organizations.repository';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
 
 import { CreateUserUseCase } from './create-user.usecase';
 
 let userRepository: InMemoryUsersRepository;
+let membersRepository: InMemoryMembersRepository;
+let organizationsRepository: InMemoryOrganizationsRepository;
 let createUserUseCase: CreateUserUseCase;
 
 const userMock = {
@@ -18,7 +22,13 @@ const userMock = {
 describe('Create User Use Case', () => {
   beforeEach(() => {
     userRepository = new InMemoryUsersRepository();
-    createUserUseCase = new CreateUserUseCase(userRepository);
+    membersRepository = new InMemoryMembersRepository();
+    organizationsRepository = new InMemoryOrganizationsRepository();
+    createUserUseCase = new CreateUserUseCase(
+      userRepository,
+      membersRepository,
+      organizationsRepository
+    );
   });
 
   it('should be able to create a user', async () => {

@@ -133,6 +133,7 @@ const seed = async () => {
     data: {
       name: faker.company.name().concat(' (Member)'),
       slug: faker.internet.domainWord(),
+      domain: faker.internet.domainName(),
       avatarUrl: faker.image.avatar(),
       ownerId: users[0].id,
       projects: {
@@ -205,6 +206,7 @@ const seed = async () => {
     data: {
       name: faker.company.name().concat(' (Billing)'),
       slug: faker.internet.domainWord(),
+      domain: faker.internet.domainName(),
       avatarUrl: faker.image.avatar(),
       ownerId: users[0].id,
       projects: {

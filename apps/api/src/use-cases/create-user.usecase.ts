@@ -68,11 +68,11 @@ class CreateUserUseCase {
 
 const makeWithPrismaCreateUserUseCase = () => {
   const userRepository = new PrismaUsersRepository();
-  const MembersRepository = new PrismaMembersRepository();
+  const membersRepository = new PrismaMembersRepository();
   const organizationsRepository = new PrismaOrganizationsRepository();
   const createUserUseCase = new CreateUserUseCase(
     userRepository,
-    MembersRepository,
+    membersRepository,
     organizationsRepository
   );
 

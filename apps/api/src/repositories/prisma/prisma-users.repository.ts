@@ -33,10 +33,7 @@ export class PrismaUsersRepository implements IUsersRepository {
     return user;
   }
 
-  async linkUserToOrganization(
-    userId: string,
-    organizationId: string
-  ): Promise<void> {
+  async linkUserToOrganization(): Promise<void> {
     throw new Error('Method not implemented.');
   }
 }

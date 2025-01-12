@@ -45,7 +45,7 @@ export const config = [
         { argsIgnorePattern: 'req|res|next|__' },
       ],
       // Enhance Readability
-      indent: ['error', 2, { SwitchCase: 1 }],
+      // indent: ['warn', 2, { SwitchCase: 1, StaticBlock: { body: 2 } }],
       'no-mixed-spaces-and-tabs': 'warn',
       'space-before-blocks': 'error',
       'space-in-parens': 'error',
