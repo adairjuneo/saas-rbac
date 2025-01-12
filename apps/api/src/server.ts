@@ -1,4 +1,5 @@
 import fastifyCors from '@fastify/cors';
+import fastifyJwt from '@fastify/jwt';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import chalk from 'chalk';
@@ -45,6 +46,10 @@ app.register(fastifyI18n, {
     en: en,
     'pt-BR': ptBR,
   },
+});
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
 });
 
 // CORS Config and prefix routes
