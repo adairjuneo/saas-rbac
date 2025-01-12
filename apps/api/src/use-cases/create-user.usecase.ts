@@ -2,7 +2,11 @@ import type { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
 import { env } from '@/env';
+import type { IMembersRepository } from '@/repositories/interfaces/members.interface';
+import type { IOrganizationsRepository } from '@/repositories/interfaces/organizations.interface';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
+import { PrismaMembersRepository } from '@/repositories/prisma/prisma-members.repository';
+import { PrismaOrganizationsRepository } from '@/repositories/prisma/prisma-organizations.repository';
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository';
 
 interface CreateUserUseCaseRequest {
@@ -16,7 +20,11 @@ interface CreateUserUseCaseResponse {
 }
 
 class CreateUserUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    private usersRepository: IUsersRepository,
+    private membersRepository: IMembersRepository,
+    private organizationsRepository: IOrganizationsRepository
+  ) {}
 
   async execute(
     data: CreateUserUseCaseRequest
@@ -33,11 +41,26 @@ class CreateUserUseCase {
     if (userWithSameEmail) {
       throw new Error('User with same e-mail already exists.');
     }
+
     const user = await this.usersRepository.create({
       name,
       email,
       passwordHash,
     });
+
+    const [, domain] = email.split('@');
+
+    if (domain) {
+      const organization =
+        await this.organizationsRepository.findByDomain(domain);
+
+      if (organization?.shouldAttachUsersByDomain) {
+        await this.membersRepository.createUserMemberOfOrganization(
+          user.id,
+          organization.id
+        );
+      }
+    }
 
     return { user };
   }
@@ -45,7 +68,14 @@ class CreateUserUseCase {
 
 const makeWithPrismaCreateUserUseCase = () => {
   const userRepository = new PrismaUsersRepository();
-  const createUserUseCase = new CreateUserUseCase(userRepository);
+  const MembersRepository = new PrismaMembersRepository();
+  const organizationsRepository = new PrismaOrganizationsRepository();
+  const createUserUseCase = new CreateUserUseCase(
+    userRepository,
+    MembersRepository,
+    organizationsRepository
+  );
+
   return createUserUseCase;
 };
 

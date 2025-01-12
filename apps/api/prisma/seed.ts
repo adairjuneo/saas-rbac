@@ -57,9 +57,9 @@ const seed = async () => {
 
   await prisma.organization.create({
     data: {
-      name: faker.company.name().concat(' (Admin)'),
-      domain: faker.internet.domainName(),
-      slug: faker.internet.domainWord(),
+      name: 'Acme (ADMIN)',
+      domain: 'acme.com',
+      slug: 'acme-admin',
       avatarUrl: faker.image.avatar(),
       shouldAttachUsersByDomain: true,
       ownerId: users[0].id,
