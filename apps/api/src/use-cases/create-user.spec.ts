@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+
 import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 import { beforeEach, describe, expect, it } from 'vitest';
@@ -59,5 +61,42 @@ describe('Create User Use Case', () => {
     await expect(
       createUserUseCase.execute({ ...userMock, email })
     ).rejects.toBeInstanceOf(Error);
+  });
+
+  it('should be able to link user in organization by domain', async () => {
+    const email = 'john.doe@acme.com';
+
+    organizationsRepository.items.push({
+      id: randomUUID(),
+      avatarUrl: null,
+      updatedAt: new Date(),
+      createdAt: new Date(),
+      name: 'Acme TESTS',
+      domain: 'acme.com',
+      ownerId: 'owner-id-test-01',
+      slug: 'acme',
+      shouldAttachUsersByDomain: true,
+    });
+
+    const { user: userOne } = await createUserUseCase.execute({
+      ...userMock,
+      email,
+    });
+
+    const { user: userTwo } = await createUserUseCase.execute({
+      ...userMock,
+      email: 'john.doe@randomtest.com',
+    });
+
+    const userAttachedOnOrganization = !!membersRepository.items.find(
+      (item) => item.userId === userOne.id
+    );
+
+    const userNotAttachedOnOrganization = !!membersRepository.items.find(
+      (item) => item.userId === userTwo.id
+    );
+
+    expect(userAttachedOnOrganization).toEqual(true);
+    expect(userNotAttachedOnOrganization).toEqual(false);
   });
 });
