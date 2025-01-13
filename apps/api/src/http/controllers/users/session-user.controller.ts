@@ -24,13 +24,11 @@ export const getUserProfile = async (app: FastifyInstance) => {
       },
     },
     async (request, reply) => {
-      await request.jwtVerify();
-
-      const { user } = request;
+      const userId = await request.getCurrentUserId();
 
       const getUserProfile = makeWithPrismaGetUserProfileUseCase();
 
-      const profile = await getUserProfile.execute({ id: user.sub });
+      const profile = await getUserProfile.execute({ id: userId });
 
       reply.status(200).send({
         content: {
