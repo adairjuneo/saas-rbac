@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 import type { User } from '@prisma/client';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { BadRequestError } from '@/errors/bad-request.error';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
 
 import { GetUserProfileUseCase } from './get-user-profile.usecase';
@@ -41,6 +42,6 @@ describe('Get User Profile Use Case', () => {
       getUserProfileUseCase.execute({
         id: 'unexist-id',
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(BadRequestError);
   });
 });

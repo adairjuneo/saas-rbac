@@ -14,12 +14,14 @@ import {
 
 import { en, ptBR } from '../locales';
 import { env } from './env';
+import { errorHandler } from './errors/error-handler';
 import { appRoutes } from './http/routes';
 
 const app = fastify({ logger: false }).withTypeProvider<ZodTypeProvider>();
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
+app.setErrorHandler(errorHandler);
 
 // Swagger Config
 app.register(fastifySwagger, {

@@ -20,36 +20,26 @@ export const getUserProfile = async (app: FastifyInstance) => {
               avatarUrl: z.string().nullable(),
             }),
           }),
-          400: z.object({
-            message: z.string(),
-          }),
         },
       },
     },
     async (request, reply) => {
-      try {
-        const { user } = request;
-        const getUserProfile = makeWithPrismaGetUserProfileUseCase();
+      await request.jwtVerify();
 
-        const profile = await getUserProfile.execute({ id: user.sub });
+      const { user } = request;
 
-        reply.status(200).send({
-          content: {
-            id: profile.user.id,
-            name: profile.user.name,
-            email: profile.user.email,
-            avatarUrl: profile.user.avatarUrl,
-          },
-        });
-      } catch (err) {
-        if (err) {
-          return reply
-            .status(400)
-            .send({ message: 'Erro to get user session.' });
-        }
+      const getUserProfile = makeWithPrismaGetUserProfileUseCase();
 
-        throw err;
-      }
+      const profile = await getUserProfile.execute({ id: user.sub });
+
+      reply.status(200).send({
+        content: {
+          id: profile.user.id,
+          name: profile.user.name,
+          email: profile.user.email,
+          avatarUrl: profile.user.avatarUrl,
+        },
+      });
     }
   );
 };

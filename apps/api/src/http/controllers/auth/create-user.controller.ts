@@ -22,28 +22,17 @@ export const createUser = async (app: FastifyInstance) => {
               id: z.string(),
             }),
           }),
-          409: z.object({
-            message: z.string(),
-          }),
         },
       },
     },
     async (request, reply) => {
       const { name, email, password } = request.body;
 
-      try {
-        const createUser = makeWithPrismaCreateUserUseCase();
+      const createUser = makeWithPrismaCreateUserUseCase();
 
-        const { user } = await createUser.execute({ name, email, password });
+      const { user } = await createUser.execute({ name, email, password });
 
-        reply.status(201).send({ content: { id: user.id } });
-      } catch (err) {
-        if (err) {
-          return reply.status(409).send({ message: 'Erro to create a user.' });
-        }
-
-        throw err;
-      }
+      reply.status(201).send({ content: { id: user.id } });
     }
   );
 };

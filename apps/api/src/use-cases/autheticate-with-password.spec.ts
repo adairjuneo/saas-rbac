@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { env } from '@/env';
+import { InvalidCredentialsError } from '@/errors/invalid-credentials.error';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
 
 import { AuthenticateWithPasswordUseCase } from './autheticate-with-password.usecase';
@@ -53,7 +54,7 @@ describe('Autheticate User With Password Use Case', () => {
         email: 'invalid.mail@tests.com',
         password: userMock.passwordHash,
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(InvalidCredentialsError);
   });
 
   it('should not be able to get a user profile by wrong password', async () => {
@@ -62,6 +63,6 @@ describe('Autheticate User With Password Use Case', () => {
         email: userMock.email,
         password: '99999999999999',
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(InvalidCredentialsError);
   });
 });

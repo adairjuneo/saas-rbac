@@ -2,6 +2,7 @@ import type { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
 import { env } from '@/env';
+import { UserAlreadyExistsError } from '@/errors/user-already-exists.error';
 import type { IMembersRepository } from '@/repositories/interfaces/members.interface';
 import type { IOrganizationsRepository } from '@/repositories/interfaces/organizations.interface';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
@@ -39,7 +40,7 @@ class CreateUserUseCase {
     const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithSameEmail) {
-      throw new Error('User with same e-mail already exists.');
+      throw new UserAlreadyExistsError();
     }
 
     const user = await this.usersRepository.create({

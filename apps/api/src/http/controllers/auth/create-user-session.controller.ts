@@ -21,32 +21,19 @@ export const createUserSession = async (app: FastifyInstance) => {
               token: z.string(),
             }),
           }),
-          404: z.object({
-            message: z.string(),
-          }),
         },
       },
     },
     async (request, reply) => {
       const { email, password } = request.body;
 
-      try {
-        const createUser = makeWithPrismaAuthenticateWithPasswordUseCase();
+      const createUser = makeWithPrismaAuthenticateWithPasswordUseCase();
 
-        const { user } = await createUser.execute({ email, password });
+      const { user } = await createUser.execute({ email, password });
 
-        const tokenJwt = await reply.jwtSign({}, { sign: { sub: user.id } });
+      const tokenJwt = await reply.jwtSign({}, { sign: { sub: user.id } });
 
-        reply.status(200).send({ content: { token: tokenJwt } });
-      } catch (err) {
-        if (err) {
-          return reply
-            .status(404)
-            .send({ message: 'Erro to create a user session.' });
-        }
-
-        throw err;
-      }
+      reply.status(200).send({ content: { token: tokenJwt } });
     }
   );
 };

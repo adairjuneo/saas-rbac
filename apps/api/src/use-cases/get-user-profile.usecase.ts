@@ -1,5 +1,6 @@
 import type { User } from '@prisma/client';
 
+import { BadRequestError } from '@/errors/bad-request.error';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository';
 
@@ -22,7 +23,7 @@ class GetUserProfileUseCase {
     const userFindById = await this.usersRepository.findById(id);
 
     if (!userFindById) {
-      throw new Error('User does not exist.');
+      throw new BadRequestError('User does not exist.');
     }
 
     return { user: userFindById };

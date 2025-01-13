@@ -1,6 +1,8 @@
 import type { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
+import { BadRequestError } from '@/errors/bad-request.error';
+import { InvalidCredentialsError } from '@/errors/invalid-credentials.error';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository';
 
@@ -24,11 +26,13 @@ class AuthenticateWithPasswordUseCase {
     const userFindByEmail = await this.usersRepository.findByEmail(email);
 
     if (!userFindByEmail) {
-      throw new Error('Invalid credentials.');
+      throw new InvalidCredentialsError();
     }
 
     if (userFindByEmail.passwordHash === null) {
-      throw new Error('User does not have a password, user social login.');
+      throw new BadRequestError(
+        'User does not have a password, user social login.'
+      );
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -37,7 +41,7 @@ class AuthenticateWithPasswordUseCase {
     );
 
     if (!isPasswordValid) {
-      throw new Error('Invalid credentials.');
+      throw new InvalidCredentialsError();
     }
 
     return { user: userFindByEmail };

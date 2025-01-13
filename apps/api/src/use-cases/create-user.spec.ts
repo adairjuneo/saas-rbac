@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 import bcrypt from 'bcryptjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { UserAlreadyExistsError } from '@/errors/user-already-exists.error';
 import { InMemoryMembersRepository } from '@/repositories/in-memory/in-memory-members.repository';
 import { InMemoryOrganizationsRepository } from '@/repositories/in-memory/in-memory-organizations.repository';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
@@ -60,7 +61,7 @@ describe('Create User Use Case', () => {
 
     await expect(
       createUserUseCase.execute({ ...userMock, email })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError);
   });
 
   it('should be able to link user in organization by domain', async () => {
