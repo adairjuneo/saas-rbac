@@ -6,7 +6,7 @@ import { makeWithPrismaCreateUserUseCase } from '@/use-cases/create-user.usecase
 
 export const createUser = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().post(
-    '/',
+    '/create-user',
     {
       schema: {
         tags: ['auth'],
@@ -16,6 +16,16 @@ export const createUser = async (app: FastifyInstance) => {
           email: z.string().email(),
           password: z.string().min(6),
         }),
+        response: {
+          200: z.object({
+            content: z.object({
+              id: z.string(),
+            }),
+          }),
+          409: z.object({
+            message: z.string(),
+          }),
+        },
       },
     },
     async (request, reply) => {
@@ -26,7 +36,7 @@ export const createUser = async (app: FastifyInstance) => {
 
         const { user } = await createUser.execute({ name, email, password });
 
-        reply.status(201).send({ content: user });
+        reply.status(201).send({ content: { id: user.id } });
       } catch (err) {
         if (err) {
           return reply.status(409).send({ message: 'Erro to create a user.' });
