@@ -49,7 +49,6 @@ describe('Reset Password Use Case', () => {
 
   it('should be able to reset password for user with a valid code', async () => {
     const { user } = await resetPasswordUseCase.execute({
-      userId: userCreated.id,
       code: tokenCreated.id,
       password: passwordForTest,
     });
@@ -69,18 +68,7 @@ describe('Reset Password Use Case', () => {
   it('should not be able to reset password for user with a invalid code', async () => {
     await expect(
       resetPasswordUseCase.execute({
-        userId: userCreated.id,
         code: 'invalid-code',
-        password: passwordForTest,
-      })
-    ).rejects.toBeInstanceOf(BadRequestError);
-  });
-
-  it('should not be able to reset password for invalid userId', async () => {
-    await expect(
-      resetPasswordUseCase.execute({
-        userId: 'invalid-user-id',
-        code: tokenCreated.id,
         password: passwordForTest,
       })
     ).rejects.toBeInstanceOf(BadRequestError);

@@ -8,7 +8,6 @@ import { PrismaTokensRepository } from '@/repositories/prisma/prisma-tokens.repo
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository';
 
 interface ResetPasswordUseCaseRequest {
-  userId: string;
   code: string;
   password: string;
 }
@@ -26,7 +25,7 @@ class ResetPasswordUseCase {
   async execute(
     data: ResetPasswordUseCaseRequest
   ): Promise<ResetPasswordUseCaseResponse> {
-    const { userId, code, password } = data;
+    const { code, password } = data;
 
     const codeIsValid = await this.tokensRepository.findById(code);
 
@@ -37,7 +36,10 @@ class ResetPasswordUseCase {
     const passwordHash = await hashPassword(password);
 
     const userChangedPasswordById =
-      await this.usersRepository.updateUserPassword(userId, passwordHash);
+      await this.usersRepository.updateUserPassword(
+        codeIsValid.userId,
+        passwordHash
+      );
 
     if (!userChangedPasswordById) {
       throw new BadRequestError('Unexpected error at try reset password.');

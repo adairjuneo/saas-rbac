@@ -16,7 +16,7 @@ export const requestRecoveryPassword = async (app: FastifyInstance) => {
           email: z.string().email(),
         }),
         response: {
-          200: z.null(),
+          204: z.null(),
         },
       },
     },
@@ -45,7 +45,7 @@ export const requestRecoveryPassword = async (app: FastifyInstance) => {
         // }
       }
 
-      reply.status(200).send();
+      reply.status(204).send();
     }
   );
 };
