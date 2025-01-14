@@ -52,6 +52,9 @@ app.register(fastifyI18n, {
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  sign: {
+    expiresIn: '3d',
+  },
 });
 
 // CORS Config and prefix routes

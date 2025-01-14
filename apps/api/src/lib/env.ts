@@ -10,6 +10,12 @@ const envSchema = z.object({
   PAGINATION_PAGE_SIZE: z.coerce.number().max(20),
   AUTH_SALT_PASSWORD_HASH: z.coerce.number().max(6),
   AUTH_KEY_EXPIRATION_SECONDS: z.coerce.number().min(120),
+  GITHUB_CLIENT_ID: z.string().min(1),
+  GITHUB_CLIENT_SECRET: z.string().min(1),
+  // GITHUB_AUTHORIZE_URL: z.string().url(),
+  GITHUB_REDIRECT_URL: z.string().url(),
+  GITHUB_USER_DATA_URL: z.string().url(),
+  GITHUB_ACCESS_TOKEN_URL: z.string().url(),
 });
 
 const _env = envSchema.safeParse(process.env);
