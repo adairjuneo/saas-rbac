@@ -1,6 +1,8 @@
-import type { User } from '@prisma/client';
+import type { Token } from '@prisma/client';
 
+import type { ITokensRepository } from '@/repositories/interfaces/tokens.interface';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
+import { PrismaTokensRepository } from '@/repositories/prisma/prisma-tokens.repository';
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository';
 
 interface RequestPasswordRecoveryUseCaseRequest {
@@ -8,11 +10,14 @@ interface RequestPasswordRecoveryUseCaseRequest {
 }
 
 interface RequestPasswordRecoveryUseCaseResponse {
-  user: User | null;
+  token: Token | null;
 }
 
 class RequestPasswordRecoveryUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  constructor(
+    private usersRepository: IUsersRepository,
+    private tokensRepository: ITokensRepository
+  ) {}
 
   async execute(
     data: RequestPasswordRecoveryUseCaseRequest
@@ -22,17 +27,24 @@ class RequestPasswordRecoveryUseCase {
     const userFoundById = await this.usersRepository.findByEmail(email);
 
     if (!userFoundById) {
-      return { user: null };
+      return { token: null };
     }
 
-    return { user: userFoundById };
+    const token = await this.tokensRepository.create({
+      userId: userFoundById.id,
+      type: 'PASSWORD_RECOVER',
+    });
+
+    return { token };
   }
 }
 
 const makeWithPrismaRequestPasswordRecoveryUseCase = () => {
   const userRepository = new PrismaUsersRepository();
+  const tokensRepository = new PrismaTokensRepository();
   const requestPasswordRecoveryUseCase = new RequestPasswordRecoveryUseCase(
-    userRepository
+    userRepository,
+    tokensRepository
   );
 
   return requestPasswordRecoveryUseCase;

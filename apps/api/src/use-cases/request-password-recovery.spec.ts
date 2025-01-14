@@ -4,19 +4,23 @@ import { faker } from '@faker-js/faker';
 import type { User } from '@prisma/client';
 import { beforeEach, describe, expect, it } from 'vitest';
 
+import { InMemoryTokensRepository } from '@/repositories/in-memory/in-memory-tokens.repository';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
 
 import { RequestPasswordRecoveryUseCase } from './request-password-recovery.usecase';
 
 let userRepository: InMemoryUsersRepository;
+let tokensRepository: InMemoryTokensRepository;
 let requestPasswordRecoveryUseCase: RequestPasswordRecoveryUseCase;
 let userCreated: User;
 
 describe('Request Password Recovery Use Case', () => {
   beforeEach(async () => {
     userRepository = new InMemoryUsersRepository();
+    tokensRepository = new InMemoryTokensRepository();
     requestPasswordRecoveryUseCase = new RequestPasswordRecoveryUseCase(
-      userRepository
+      userRepository,
+      tokensRepository
     );
 
     userCreated = await userRepository.create({
@@ -31,20 +35,19 @@ describe('Request Password Recovery Use Case', () => {
   });
 
   it('should be able to get a user for recovery password', async () => {
-    const { user } = await requestPasswordRecoveryUseCase.execute({
+    const { token } = await requestPasswordRecoveryUseCase.execute({
       email: userCreated.email,
     });
 
-    expect(user?.id).toEqual(expect.any(String));
-    expect(user?.email).toEqual(expect.any(String));
-    expect(user?.passwordHash).toEqual(expect.any(String));
+    expect(token?.id).toEqual(expect.any(String));
+    expect(token?.userId).toEqual(expect.any(String));
   });
 
   it('should be able to get a NULL user for recovery password unexist email', async () => {
-    const { user } = await requestPasswordRecoveryUseCase.execute({
+    const { token } = await requestPasswordRecoveryUseCase.execute({
       email: 'invalid-email@test.com',
     });
 
-    expect(user).toEqual(null);
+    expect(token).toEqual(null);
   });
 });

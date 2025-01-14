@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 
-import { env } from '@/env';
+import { env } from './env';
 
 export const hashPassword = async (password: string) => {
   const passwordHash = await bcrypt.hash(password, env.AUTH_SALT_PASSWORD_HASH);
