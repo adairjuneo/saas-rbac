@@ -1,10 +1,10 @@
 import { randomUUID } from 'node:crypto';
 
 import { faker } from '@faker-js/faker';
-import bcrypt from 'bcryptjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { UserAlreadyExistsError } from '@/errors/user-already-exists.error';
+import { comparePassword } from '@/lib/password';
 import { InMemoryMembersRepository } from '@/repositories/in-memory/in-memory-members.repository';
 import { InMemoryOrganizationsRepository } from '@/repositories/in-memory/in-memory-organizations.repository';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
@@ -46,7 +46,7 @@ describe('Create User Use Case', () => {
       password: '987654321',
     });
 
-    const isPasswordCorrectlyHashed = await bcrypt.compare(
+    const isPasswordCorrectlyHashed = await comparePassword(
       '987654321',
       user.passwordHash
     );

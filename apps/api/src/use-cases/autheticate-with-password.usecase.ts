@@ -1,8 +1,8 @@
 import type { User } from '@prisma/client';
-import bcrypt from 'bcryptjs';
 
 import { BadRequestError } from '@/errors/bad-request.error';
 import { InvalidCredentialsError } from '@/errors/invalid-credentials.error';
+import { comparePassword } from '@/lib/password';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
 import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users.repository';
 
@@ -35,7 +35,7 @@ class AuthenticateWithPasswordUseCase {
       );
     }
 
-    const isPasswordValid = await bcrypt.compare(
+    const isPasswordValid = await comparePassword(
       password,
       userFindByEmail.passwordHash
     );

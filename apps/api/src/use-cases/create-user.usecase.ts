@@ -1,8 +1,7 @@
 import type { User } from '@prisma/client';
-import bcrypt from 'bcryptjs';
 
-import { env } from '@/env';
 import { UserAlreadyExistsError } from '@/errors/user-already-exists.error';
+import { hashPassword } from '@/lib/password';
 import type { IMembersRepository } from '@/repositories/interfaces/members.interface';
 import type { IOrganizationsRepository } from '@/repositories/interfaces/organizations.interface';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
@@ -32,10 +31,7 @@ class CreateUserUseCase {
   ): Promise<CreateUserUseCaseResponse> {
     const { name, email, password } = data;
 
-    const passwordHash = await bcrypt.hash(
-      password,
-      env.AUTH_SALT_PASSWORD_HASH
-    );
+    const passwordHash = await hashPassword(password);
 
     const userWithSameEmail = await this.usersRepository.findByEmail(email);
 

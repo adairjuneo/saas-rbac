@@ -2,11 +2,10 @@ import { randomUUID } from 'node:crypto';
 
 import { faker } from '@faker-js/faker';
 import type { Token, User } from '@prisma/client';
-import bcrypt from 'bcryptjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { env } from '@/env';
 import { BadRequestError } from '@/errors/bad-request.error';
+import { comparePassword, hashPassword } from '@/lib/password';
 import { InMemoryTokensRepository } from '@/repositories/in-memory/in-memory-tokens.repository';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
 
@@ -28,10 +27,7 @@ describe('Reset Password Use Case', () => {
       tokensRepository
     );
 
-    const passwordHash = await bcrypt.hash(
-      '99999999999999',
-      env.AUTH_SALT_PASSWORD_HASH
-    );
+    const passwordHash = await hashPassword('99999999999999');
 
     userCreated = await userRepository.create({
       id: randomUUID(),
@@ -58,7 +54,7 @@ describe('Reset Password Use Case', () => {
       password: passwordForTest,
     });
 
-    const passwordsIsTheSame = await bcrypt.compare(
+    const passwordsIsTheSame = await comparePassword(
       passwordForTest,
       userCreated.passwordHash
     );

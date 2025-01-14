@@ -1,8 +1,7 @@
 import type { User } from '@prisma/client';
-import bcrypt from 'bcryptjs';
 
-import { env } from '@/env';
 import { BadRequestError } from '@/errors/bad-request.error';
+import { hashPassword } from '@/lib/password';
 import type { ITokensRepository } from '@/repositories/interfaces/tokens.interface';
 import type { IUsersRepository } from '@/repositories/interfaces/users.interface';
 import { PrismaTokensRepository } from '@/repositories/prisma/prisma-tokens.repository';
@@ -35,10 +34,7 @@ class ResetPasswordUseCase {
       throw new BadRequestError('Token provide for reset password is invalid.');
     }
 
-    const passwordHash = await bcrypt.hash(
-      password,
-      env.AUTH_SALT_PASSWORD_HASH
-    );
+    const passwordHash = await hashPassword(password);
 
     const userChangedPasswordById =
       await this.usersRepository.updateUserPassword(userId, passwordHash);

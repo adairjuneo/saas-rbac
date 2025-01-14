@@ -2,11 +2,10 @@ import { randomUUID } from 'node:crypto';
 
 import { faker } from '@faker-js/faker';
 import type { User } from '@prisma/client';
-import bcrypt from 'bcryptjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { env } from '@/env';
 import { InvalidCredentialsError } from '@/errors/invalid-credentials.error';
+import { hashPassword } from '@/lib/password';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
 
 import { AuthenticateWithPasswordUseCase } from './autheticate-with-password.usecase';
@@ -31,10 +30,7 @@ describe('Autheticate User With Password Use Case', () => {
       userRepository
     );
 
-    const passwordHash = await bcrypt.hash(
-      userMock.passwordHash,
-      env.AUTH_SALT_PASSWORD_HASH
-    );
+    const passwordHash = await hashPassword(userMock.passwordHash);
 
     await userRepository.create({ ...userMock, passwordHash });
   });
