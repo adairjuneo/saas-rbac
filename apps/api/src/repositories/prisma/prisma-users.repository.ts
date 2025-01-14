@@ -33,6 +33,22 @@ export class PrismaUsersRepository implements IUsersRepository {
     return user;
   }
 
+  async updateUserPassword(
+    id: string,
+    passwordHash: string
+  ): Promise<User | null> {
+    const user = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        passwordHash,
+      },
+    });
+
+    return user;
+  }
+
   async linkUserToOrganization(): Promise<void> {
     throw new Error('Method not implemented.');
   }
