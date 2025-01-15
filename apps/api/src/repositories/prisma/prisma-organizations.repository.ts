@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma';
 import type { IOrganizationsRepository } from '../interfaces/organizations.interface';
 
 export class PrismaOrganizationsRepository implements IOrganizationsRepository {
-  async create(data: Prisma.OrganizationCreateInput) {
+  async create(data: Prisma.OrganizationUncheckedCreateInput) {
     const organization = await prisma.organization.create({
       data,
     });

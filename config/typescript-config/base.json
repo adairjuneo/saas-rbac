@@ -11,9 +11,10 @@
       "DOM",
       "DOM.Iterable"
     ],
-    "module": "CommonJS",
+    "module": "Preserve",
+    "noEmit": true,
     "moduleDetection": "force",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noUncheckedIndexedAccess": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,

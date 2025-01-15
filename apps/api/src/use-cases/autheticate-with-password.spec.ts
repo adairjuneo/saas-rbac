@@ -38,7 +38,7 @@ describe('Autheticate User With Password Use Case', () => {
   it('should be able to get a user by email and password', async () => {
     const { user } = await authenticateWithPasswordUseCase.execute({
       email: userMock.email,
-      password: userMock.passwordHash,
+      password: userMock.passwordHash || '',
     });
 
     expect(user.id).toEqual(expect.any(String));
@@ -48,7 +48,7 @@ describe('Autheticate User With Password Use Case', () => {
     await expect(
       authenticateWithPasswordUseCase.execute({
         email: 'invalid.mail@tests.com',
-        password: userMock.passwordHash,
+        password: userMock.passwordHash || '',
       })
     ).rejects.toBeInstanceOf(InvalidCredentialsError);
   });

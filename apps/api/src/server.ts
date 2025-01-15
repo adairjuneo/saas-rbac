@@ -67,5 +67,9 @@ app
     port: env.PORT,
   })
   .then(() => {
-    console.info(chalk.greenBright('🔥 HTTP Server Running!'));
+    console.info(
+      String(chalk.greenBright('🔥 HTTP Server Running on ')).concat(
+        chalk.yellowBright(`http://localhost:${env.PORT}`)
+      )
+    );
   });

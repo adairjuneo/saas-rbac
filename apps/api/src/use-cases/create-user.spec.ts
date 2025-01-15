@@ -48,7 +48,7 @@ describe('Create User Use Case', () => {
 
     const isPasswordCorrectlyHashed = await comparePassword(
       '987654321',
-      user.passwordHash
+      user.passwordHash || ''
     );
 
     expect(isPasswordCorrectlyHashed).toBe(true);

@@ -10,7 +10,9 @@ export class InMemoryOrganizationsRepository
 {
   public items: Organization[] = [];
 
-  async create(data: Prisma.OrganizationCreateInput): Promise<Organization> {
+  async create(
+    data: Prisma.OrganizationUncheckedCreateInput
+  ): Promise<Organization> {
     const organization = {
       id: randomUUID(),
       name: data?.name || faker.company.name(),
@@ -18,7 +20,7 @@ export class InMemoryOrganizationsRepository
       slug: data?.slug || faker.internet.domainWord(),
       domain: data?.domain || faker.internet.domainName(),
       shouldAttachUsersByDomain: data?.shouldAttachUsersByDomain || false,
-      ownerId: 'user-id-01',
+      ownerId: data.ownerId,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

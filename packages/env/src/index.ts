@@ -1,7 +1,7 @@
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
-export const env = createEnv({
+export const envSchema = createEnv({
   server: {
     NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
     PORT: z.coerce.number().default(3333),

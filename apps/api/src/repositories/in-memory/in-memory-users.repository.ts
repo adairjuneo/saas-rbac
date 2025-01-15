@@ -9,7 +9,7 @@ import type { IUsersRepository } from '../interfaces/users.interface';
 export class InMemoryUsersRepository implements IUsersRepository {
   public items: User[] = [];
 
-  async create(data: Prisma.UserCreateInput) {
+  async create(data: Prisma.UserUncheckedCreateInput) {
     const user = {
       id: randomUUID(),
       name: data.name || faker.person.fullName(),
