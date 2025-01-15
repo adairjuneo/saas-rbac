@@ -6,7 +6,10 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
-    "build": ""
+    "build": "",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint --max-warnings=0"
   },
   "keywords": [
     "auth",

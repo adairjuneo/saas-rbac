@@ -6,16 +6,18 @@
   "types": "src/server.ts",
   "scripts": {
     "dev": "npm run env:load tsx watch src/server.ts",
-    "start": "npm run env:load node build/server.js",
-    "build": "tsup src --out-dir build",
+    "start": "npm run env:load node dist/server.js",
+    "build": "tsup src --out-dir dist",
     "db:studio": "npm run env:load npx prisma studio",
     "db:migratedev": "npm run env:load npx prisma migrate dev",
     "test": "npm run env:load vitest run --dir src",
     "test:watch": "npm run env:load vitest --dir src",
     "prettier:fix": "npx prettier . --write",
     "prettier:check": "npx prettier . --check",
-    "lint:check": "eslint --max-warnings=0",
-    "env:load": "dotenv -e ../../.env --"
+    "env:load": "dotenv -e ../../.env --",
+    "lint": "eslint --max-warnings=0",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [],
   "author": "devjuneo.com",

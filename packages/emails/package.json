@@ -21,7 +21,7 @@
     "build": "tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint --max-warnings=0"
+    "lint": "eslint src/ --max-warnings=0"
   },
   "dependencies": {
     "react-dom": "19.0.0",
