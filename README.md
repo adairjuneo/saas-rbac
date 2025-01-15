@@ -10,10 +10,14 @@ SAAS Multi-tenant with RBAC(Role based authentication control);
 - [x] It should be able to authenticate using Github account;
 - [x] It should be able to recover password using e-mail;
 - [x] It should be able to create an account (e-mail, name and password);
+- [ ] 🆕 It should be able to validate a recover password code with expirationAt(max 30 minutes);
+- [ ] 🆕 It should be able to mark on database when recover password code has already been used;
+- [ ] 🆕 It should be able to send an e-mail to user when password is reset to a new;
+- [ ] 🆕 It should be able to send an e-mail to user when password is reset to a new;
 
 ### Organizations
 
-- [ ] It should be able to create a new organization;
+- [x] It should be able to create a new organization;
 - [ ] It should be able to get organizations to which the user belongs;
 - [ ] It should be able to update an organization;
 - [ ] It should be able to shutdown an organization;
