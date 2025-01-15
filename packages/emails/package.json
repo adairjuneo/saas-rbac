@@ -1,0 +1,42 @@
+{
+  "name": "@saas-rbac/emails",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "sideEffects": false,
+  "files": [
+    "dist/**"
+  ],
+  "exports": {
+    "./recovery-password": {
+      "types": "./src/recovery-password.tsx",
+      "require": "./dist/recovery-password.js",
+      "import": "./dist/recovery-password.mjs"
+    }
+  },
+  "scripts": {
+    "dev": "email dev --dir ./src -p 3334",
+    "start": "tsup --watch",
+    "build": "tsup",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint --max-warnings=0"
+  },
+  "dependencies": {
+    "react-dom": "19.0.0",
+    "react": "19.0.0",
+    "@react-email/components": "0.0.32"
+  },
+  "devDependencies": {
+    "@saas-rbac/eslint-config": "*",
+    "@saas-rbac/prettier-config": "*",
+    "@saas-rbac/typescript-config": "*",
+    "@types/node": "20.11.24",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.1",
+    "react-email": "3.0.6",
+    "tsup": "8.0.2",
+    "typescript": "5.5.4"
+  }
+}

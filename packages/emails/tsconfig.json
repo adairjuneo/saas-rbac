@@ -2,17 +2,13 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@saas-rbac/typescript-config/base.json",
   "compilerOptions": {
-    "outDir": "./build",
-    "rootDir": "./",
-    "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "typeRoots": [
-      "./src/**/*"
-    ]
+    "lib": [
+      "ES2015"
+    ],
+    "module": "ESNext",
+    "target": "ES6",
+    "jsx": "react-jsx",
+    "noEmit": true
   },
   "include": [
     "./src/**/*",

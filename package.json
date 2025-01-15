@@ -3,9 +3,12 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "clean": "turbo run clean",
+    "test": "turbo run test",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
+    "typecheck": "turbo run typecheck"
   },
   "devDependencies": {
     "prettier": "3.2.5",
