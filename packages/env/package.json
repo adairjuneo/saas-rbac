@@ -1,0 +1,28 @@
+{
+  "name": "@saas-rbac/env",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "keywords": [
+    "env",
+    "package env",
+    "saas",
+    "rbac"
+  ],
+  "author": "devjuneo.com",
+  "license": "ISC",
+  "description": "ENV package of SAAS RBAC.",
+  "devDependencies": {
+    "@saas-rbac/eslint-config": "*",
+    "@saas-rbac/prettier-config": "*",
+    "@saas-rbac/typescript-config": "*",
+    "@types/node": "22.10.5",
+    "typescript": "5.7.3"
+  },
+  "dependencies": {
+    "@t3-oss/env-nextjs": "0.11.1",
+    "zod": "3.24.1"
+  }
+}
