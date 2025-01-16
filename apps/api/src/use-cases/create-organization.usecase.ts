@@ -45,7 +45,7 @@ class CreateOrganizationUseCase {
       domain,
       avatarUrl,
       shouldAttachUsersByDomain,
-      slug: createSlug(name),
+      slug: createSlug(domain),
       ownerId,
     });
 
