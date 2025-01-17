@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 import { faker } from '@faker-js/faker';
 import type { Organization, Prisma } from '@prisma/client';
+import _ from 'lodash';
 
 import type { IOrganizationsRepository } from '../interfaces/organizations.interface';
 
@@ -30,8 +31,31 @@ export class InMemoryOrganizationsRepository
     return organization;
   }
 
-  async update(): Promise<Organization> {
-    throw new Error('Method not implemented.');
+  async update(
+    organizationId: string,
+    data: {
+      name?: string;
+      domain?: string;
+      shouldAttachUsersByDomain?: boolean;
+    }
+  ): Promise<Organization | null> {
+    const organizationToUpdate = this.items.find(
+      (item) => item.id === organizationId
+    );
+
+    if (!organizationToUpdate) return null;
+
+    this.items.filter((item) => item.id === organizationId);
+
+    const index = _.findIndex(this.items, { id: organizationId });
+
+    const organizationUpdated = { ...organizationToUpdate, ...data };
+
+    if (index !== -1) {
+      this.items[index] = _.merge({}, this.items[index], organizationUpdated);
+    }
+
+    return organizationUpdated;
   }
 
   async findById(): Promise<Organization | null> {
