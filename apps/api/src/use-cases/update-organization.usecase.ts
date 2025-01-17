@@ -1,14 +1,15 @@
 import type { Organization } from '@prisma/client';
 
 import { BadRequestError } from '@/errors/bad-request.error';
+import { ResourceNotFoundError } from '@/errors/resource-not-found.error';
 import type { IOrganizationsRepository } from '@/repositories/interfaces/organizations.interface';
 import { PrismaOrganizationsRepository } from '@/repositories/prisma/prisma-organizations.repository';
 
 interface UpdateOrganizationUseCaseRequest {
   organizationId: string;
-  name: string;
-  domain: string;
-  shouldAttachUsersByDomain: boolean;
+  name?: string;
+  domain?: string;
+  shouldAttachUsersByDomain?: boolean;
 }
 
 interface UpdateOrganizationUseCaseResponse {
@@ -23,16 +24,25 @@ class UpdateOrganizationUseCase {
   ): Promise<UpdateOrganizationUseCaseResponse> {
     const { organizationId, name, domain, shouldAttachUsersByDomain } = data;
 
-    const organizationFindedByDomain =
-      await this.organizationsRepository.findByDomain(domain);
+    const organizationFinded =
+      await this.organizationsRepository.findById(organizationId);
 
-    if (
-      organizationFindedByDomain &&
-      organizationFindedByDomain.id !== organizationId
-    ) {
-      throw new BadRequestError(
-        'Already exists another organization with same domain.'
-      );
+    if (!organizationFinded) {
+      throw new ResourceNotFoundError();
+    }
+
+    if (domain) {
+      const organizationFindedByDomain =
+        await this.organizationsRepository.findByDomain(domain);
+
+      if (
+        organizationFindedByDomain &&
+        organizationFindedByDomain.id !== organizationId
+      ) {
+        throw new BadRequestError(
+          'Already exists another organization with same domain.'
+        );
+      }
     }
 
     const organizationUpdated = await this.organizationsRepository.update(

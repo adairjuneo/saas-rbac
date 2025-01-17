@@ -58,8 +58,12 @@ export class InMemoryOrganizationsRepository
     return organizationUpdated;
   }
 
-  async findById(): Promise<Organization | null> {
-    throw new Error('Method not implemented.');
+  async findById(id: string): Promise<Organization | null> {
+    const organization = this.items.find((item) => item.id === id);
+
+    if (!organization) return null;
+
+    return organization;
   }
 
   async findByDomain(domain: string): Promise<Organization | null> {

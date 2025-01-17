@@ -86,6 +86,6 @@ export const errorHandler: FastifyErrorHandler = (error, _, reply) => {
   console.error(chalk.redBright(error));
 
   return reply.status(500).send({
-    message: 'Internal server error.',
+    message: error.message,
   });
 };

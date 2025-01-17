@@ -5,6 +5,7 @@ import type { Organization, User } from '@prisma/client';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { BadRequestError } from '@/errors/bad-request.error';
+import { ResourceNotFoundError } from '@/errors/resource-not-found.error';
 import { createSlug } from '@/lib/create-slug';
 import { InMemoryOrganizationsRepository } from '@/repositories/in-memory/in-memory-organizations.repository';
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users.repository';
@@ -70,7 +71,7 @@ describe('Update Organization Use Case', () => {
         domain: faker.internet.domainName(),
         shouldAttachUsersByDomain: true,
       })
-    ).rejects.toBeInstanceOf(BadRequestError);
+    ).rejects.toBeInstanceOf(ResourceNotFoundError);
   });
 
   it('should be able to update a domain of existing organization with the same id', async () => {
