@@ -48,4 +48,16 @@ export class PrismaOrganizationsRepository implements IOrganizationsRepository {
 
     return organization;
   }
+
+  async shutdownOrganizationById(organizationId: string): Promise<void | null> {
+    const organizationHasBeenOff = await prisma.organization.delete({
+      where: {
+        id: organizationId,
+      },
+    });
+
+    if (!organizationHasBeenOff) {
+      return null;
+    }
+  }
 }

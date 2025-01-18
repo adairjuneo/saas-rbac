@@ -12,4 +12,5 @@ export interface IOrganizationsRepository {
   ): Promise<Organization | null>;
   findById(id: string): Promise<Organization | null>;
   findByDomain(domain: string): Promise<Organization | null>;
+  shutdownOrganizationById(organizationId: string): Promise<void | null>;
 }

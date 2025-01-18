@@ -73,4 +73,16 @@ export class InMemoryOrganizationsRepository
 
     return organization || null;
   }
+
+  async shutdownOrganizationById(organizationId: string): Promise<void | null> {
+    const organization = this.items.findIndex(
+      (item) => item.id === organizationId
+    );
+
+    if (organization < 0) {
+      return null;
+    }
+
+    this.items.slice(organization);
+  }
 }
