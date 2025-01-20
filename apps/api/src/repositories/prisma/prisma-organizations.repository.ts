@@ -60,4 +60,20 @@ export class PrismaOrganizationsRepository implements IOrganizationsRepository {
       return null;
     }
   }
+
+  async transferOwnerOfOrganization(
+    organizationId: string,
+    userId: string
+  ): Promise<Organization | null> {
+    const organization = await prisma.organization.update({
+      where: {
+        id: organizationId,
+      },
+      data: {
+        ownerId: userId,
+      },
+    });
+
+    return organization;
+  }
 }

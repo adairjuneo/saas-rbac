@@ -85,4 +85,30 @@ export class InMemoryOrganizationsRepository
 
     this.items.slice(organization);
   }
+
+  async transferOwnerOfOrganization(
+    organizationId: string,
+    userId: string
+  ): Promise<Organization | null> {
+    const organizationIndex = this.items.findIndex(
+      (item) => item.id === organizationId
+    );
+
+    let organizationUpdated = this.items[organizationIndex];
+
+    this.items.map((organization) => {
+      if (organization.id === organizationId) {
+        organizationUpdated = { ...organization, ownerId: userId };
+        return organizationUpdated;
+      } else {
+        return { ...organization };
+      }
+    });
+
+    if (!organizationUpdated) {
+      return null;
+    }
+
+    return organizationUpdated;
+  }
 }

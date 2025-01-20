@@ -1,4 +1,4 @@
-import { type Member } from '@prisma/client';
+import { type Member, type Role } from '@prisma/client';
 
 import { prisma } from '@/lib/prisma';
 
@@ -49,6 +49,42 @@ export class PrismaMembersRepository implements IMembersRepository {
         userId,
         organizationId,
         role: 'MEMBER',
+      },
+    });
+
+    return member;
+  }
+
+  async findUserMemberOfOrganization(
+    userId: string,
+    organizationId: string
+  ): Promise<Member | null> {
+    const member = await prisma.member.findUnique({
+      where: {
+        organizationId_userId: {
+          organizationId,
+          userId,
+        },
+      },
+    });
+
+    return member;
+  }
+
+  async updateMemberRoleOnOrganization(
+    userId: string,
+    organizationId: string,
+    role: Role
+  ): Promise<Member | null> {
+    const member = await prisma.member.update({
+      where: {
+        organizationId_userId: {
+          organizationId,
+          userId,
+        },
+      },
+      data: {
+        role,
       },
     });
 

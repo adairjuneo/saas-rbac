@@ -13,4 +13,8 @@ export interface IOrganizationsRepository {
   findById(id: string): Promise<Organization | null>;
   findByDomain(domain: string): Promise<Organization | null>;
   shutdownOrganizationById(organizationId: string): Promise<void | null>;
+  transferOwnerOfOrganization(
+    organizationId: string,
+    userId: string
+  ): Promise<Organization | null>;
 }

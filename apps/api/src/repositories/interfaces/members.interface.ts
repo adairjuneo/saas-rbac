@@ -1,7 +1,11 @@
-import type { Member } from '@prisma/client';
+import type { Member, Role } from '@prisma/client';
 
 export interface IMembersRepository {
   findByUserId(userId: string): Promise<Member | null>;
+  findUserMemberOfOrganization(
+    userId: string,
+    organizationId: string
+  ): Promise<Member | null>;
   findByOrganizationId(organizationId: string): Promise<Member | null>;
   createUserMemberOfOrganization(
     userId: string,
@@ -11,4 +15,9 @@ export interface IMembersRepository {
     userId: string,
     organizationId: string
   ): Promise<Member>;
+  updateMemberRoleOnOrganization(
+    userId: string,
+    organizationId: string,
+    role: Role
+  ): Promise<Member | null>;
 }
