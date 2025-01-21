@@ -8,7 +8,7 @@ import { makeWithPrismaCreateProjectUseCase } from '@/use-cases/create-project.u
 
 export const createProject = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().post(
-    '/create-project/:slug',
+    '/:slug/create-project',
     {
       schema: {
         tags: ['projects'],
@@ -19,7 +19,7 @@ export const createProject = async (app: FastifyInstance) => {
           avatarUrl: z.string().url().optional(),
         }),
         params: z.object({
-          slug: z.string(),
+          slug: z.string({ description: 'Organization slug' }),
         }),
         response: {
           201: z.object({
