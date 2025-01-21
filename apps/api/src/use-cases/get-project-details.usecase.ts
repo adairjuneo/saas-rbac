@@ -5,8 +5,9 @@ import type { IProjectsRepository } from '@/repositories/interfaces/projects.int
 import { PrismaProjectsRepository } from '@/repositories/prisma/prisma-projects.repository';
 
 interface GetProjectDetailsUseCaseRequest {
-  projectId: string;
+  projectId: string | null;
   organizationId: string;
+  projectSlug: string | null;
 }
 
 interface GetProjectDetailsUseCaseResponse {
@@ -19,11 +20,12 @@ class GetProjectDetailsUseCase {
   async execute(
     data: GetProjectDetailsUseCaseRequest
   ): Promise<GetProjectDetailsUseCaseResponse> {
-    const { projectId, organizationId } = data;
+    const { projectId, organizationId, projectSlug } = data;
 
     const projectFinded = await this.projectsRepository.findUnique(
       projectId,
-      organizationId
+      organizationId,
+      projectSlug
     );
 
     if (!projectFinded) {

@@ -21,13 +21,33 @@ export class PrismaProjectsRepository implements IProjectsRepository {
   }
 
   async findUnique(
-    projectId: string,
-    organizationId: string
+    projectId: string | null,
+    organizationId: string,
+    projectSlug: string | null
   ): Promise<Project | null> {
     const project = await prisma.project.findUnique({
       where: {
-        id: projectId,
+        id: projectId ?? undefined,
         organizationId,
+        slug: projectSlug ?? undefined,
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        description: true,
+        avatarUrl: true,
+        createdAt: true,
+        updatedAt: true,
+        ownerId: true,
+        organizationId: true,
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
       },
     });
 

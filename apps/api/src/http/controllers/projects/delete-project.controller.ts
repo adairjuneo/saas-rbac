@@ -17,7 +17,7 @@ export const deleteProject = async (app: FastifyInstance) => {
         summary: 'Delete a project',
         params: z.object({
           slug: z.string({ description: 'Organization slug' }),
-          projectId: z.string({ description: 'Organization slug' }),
+          projectId: z.string(),
         }),
         response: {
           204: z.null(),
@@ -35,6 +35,7 @@ export const deleteProject = async (app: FastifyInstance) => {
       const { project } = await findProject.execute({
         projectId,
         organizationId: organization.id,
+        projectSlug: null,
       });
 
       const { cannot } = createUserPermissions(userId, membership.role);
