@@ -20,6 +20,32 @@ export class PrismaProjectsRepository implements IProjectsRepository {
     });
   }
 
+  async findMany(organizationId: string): Promise<Project[] | null> {
+    const project = await prisma.project.findMany({
+      where: { organizationId },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        description: true,
+        avatarUrl: true,
+        createdAt: true,
+        updatedAt: true,
+        ownerId: true,
+        organizationId: true,
+        owner: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    });
+
+    return project;
+  }
+
   async findUnique(
     projectId: string | null,
     organizationId: string,
