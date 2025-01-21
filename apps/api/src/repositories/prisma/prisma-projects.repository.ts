@@ -20,6 +20,18 @@ export class PrismaProjectsRepository implements IProjectsRepository {
     });
   }
 
+  async update(
+    projectId: string,
+    data: Prisma.ProjectUncheckedUpdateInput
+  ): Promise<void> {
+    await prisma.project.update({
+      where: {
+        id: projectId,
+      },
+      data,
+    });
+  }
+
   async findMany(organizationId: string): Promise<Project[] | null> {
     const project = await prisma.project.findMany({
       where: { organizationId },
