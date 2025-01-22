@@ -26,6 +26,7 @@ export interface IMembersRepository {
     organizationId: string,
     data: CreateUpdateMemberDTO
   ): Promise<MemberDTO>;
+  removeOfOrganization(memberId: string, organizationId: string): Promise<void>;
   findMany(organizationId: string): Promise<MemberDTO[] | null>;
   findByUserId(userId: string): Promise<Member | null>;
   findUserMemberOfOrganization(

@@ -39,6 +39,18 @@ export class PrismaMembersRepository implements IMembersRepository {
     return member;
   }
 
+  async removeOfOrganization(
+    memberId: string,
+    organizationId: string
+  ): Promise<void> {
+    await prisma.member.delete({
+      where: {
+        id: memberId,
+        organizationId,
+      },
+    });
+  }
+
   async findMany(organizationId: string): Promise<MemberDTO[] | null> {
     const members = await prisma.member.findMany({
       where: { organizationId },

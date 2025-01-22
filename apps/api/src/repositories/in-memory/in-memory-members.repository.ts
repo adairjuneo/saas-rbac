@@ -118,4 +118,8 @@ export class InMemoryMembersRepository implements IMembersRepository {
   async update(): Promise<MemberDTO> {
     throw new Error('Method not implemented.');
   }
+
+  async removeOfOrganization(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
 }
