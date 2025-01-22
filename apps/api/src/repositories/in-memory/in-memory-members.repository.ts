@@ -107,4 +107,8 @@ export class InMemoryMembersRepository implements IMembersRepository {
 
     return memberUpdated;
   }
+
+  findMany(organizationId: string): Promise<Member[] | null> {
+    throw new Error('Method not implemented.');
+  }
 }

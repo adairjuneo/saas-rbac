@@ -1,6 +1,22 @@
 import type { Member, Role } from '@prisma/client';
+import { roleSchema } from '@saas-rbac/auth/src/roles';
+import { z } from 'zod';
+
+export const membersSchema = z.object({
+  id: z.string(),
+  role: roleSchema,
+  user: z.object({
+    id: z.string(),
+    name: z.string().nullable(),
+    email: z.string(),
+    avatarUrl: z.string().nullable(),
+  }),
+});
+
+export type MemberDTO = z.infer<typeof membersSchema>;
 
 export interface IMembersRepository {
+  findMany(organizationId: string): Promise<MemberDTO[] | null>;
   findByUserId(userId: string): Promise<Member | null>;
   findUserMemberOfOrganization(
     userId: string,
