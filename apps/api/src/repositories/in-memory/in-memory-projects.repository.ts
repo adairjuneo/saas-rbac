@@ -25,26 +25,19 @@ export class InMemoryProjectsRepository implements IProjectsRepository {
     return project;
   }
 
-  delete(projectId: string, organizationId: string): Promise<void> {
+  delete(): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  update(
-    projectId: string,
-    data: Prisma.ProjectUncheckedUpdateInput
-  ): Promise<void> {
+  update(): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  findMany(organizationId: string): Promise<Project[] | null> {
+  findMany(): Promise<Project[] | null> {
     throw new Error('Method not implemented.');
   }
 
-  findUnique(
-    projectId: string | null,
-    organizationId: string,
-    projectSlug: string | null
-  ): Promise<Project | null> {
+  findUnique(): Promise<Project | null> {
     throw new Error('Method not implemented.');
   }
 }

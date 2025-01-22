@@ -13,9 +13,19 @@ export const membersSchema = z.object({
   }),
 });
 
+export const createUpdateMembersSchema = z.object({
+  role: roleSchema,
+});
+
 export type MemberDTO = z.infer<typeof membersSchema>;
+export type CreateUpdateMemberDTO = z.infer<typeof createUpdateMembersSchema>;
 
 export interface IMembersRepository {
+  update(
+    memberId: string,
+    organizationId: string,
+    data: CreateUpdateMemberDTO
+  ): Promise<MemberDTO>;
   findMany(organizationId: string): Promise<MemberDTO[] | null>;
   findByUserId(userId: string): Promise<Member | null>;
   findUserMemberOfOrganization(

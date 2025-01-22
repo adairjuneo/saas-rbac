@@ -3,7 +3,10 @@ import { randomUUID } from 'node:crypto';
 import { type Member, Role } from '@prisma/client';
 import _ from 'lodash';
 
-import type { IMembersRepository } from '../interfaces/members.interface';
+import type {
+  IMembersRepository,
+  MemberDTO,
+} from '../interfaces/members.interface';
 
 export class InMemoryMembersRepository implements IMembersRepository {
   public items: Member[] = [];
@@ -108,7 +111,11 @@ export class InMemoryMembersRepository implements IMembersRepository {
     return memberUpdated;
   }
 
-  findMany(organizationId: string): Promise<Member[] | null> {
+  async findMany(): Promise<MemberDTO[] | null> {
+    throw new Error('Method not implemented.');
+  }
+
+  async update(): Promise<MemberDTO> {
     throw new Error('Method not implemented.');
   }
 }

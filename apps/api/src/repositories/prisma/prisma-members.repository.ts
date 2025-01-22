@@ -3,11 +3,42 @@ import { type Member, type Role } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 
 import type {
+  CreateUpdateMemberDTO,
   IMembersRepository,
   MemberDTO,
 } from '../interfaces/members.interface';
 
 export class PrismaMembersRepository implements IMembersRepository {
+  async update(
+    memberId: string,
+    organizationId: string,
+    data: CreateUpdateMemberDTO
+  ): Promise<MemberDTO> {
+    const member = await prisma.member.update({
+      where: {
+        id: memberId,
+        organizationId,
+      },
+      data: {
+        role: data.role,
+      },
+      select: {
+        id: true,
+        role: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    });
+
+    return member;
+  }
+
   async findMany(organizationId: string): Promise<MemberDTO[] | null> {
     const members = await prisma.member.findMany({
       where: { organizationId },
