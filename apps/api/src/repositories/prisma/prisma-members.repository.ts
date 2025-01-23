@@ -1,4 +1,4 @@
-import { type Member, type Role } from '@prisma/client';
+import { type Member, type Prisma, type Role } from '@prisma/client';
 
 import { prisma } from '@/lib/prisma';
 
@@ -54,6 +54,33 @@ export class PrismaMembersRepository implements IMembersRepository {
   async findMany(organizationId: string): Promise<MemberDTO[] | null> {
     const members = await prisma.member.findMany({
       where: { organizationId },
+      select: {
+        id: true,
+        role: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: {
+        role: 'asc',
+      },
+    });
+
+    return members;
+  }
+
+  async findFirst({
+    where,
+  }: {
+    where: Prisma.MemberWhereInput;
+  }): Promise<MemberDTO | null> {
+    const members = await prisma.member.findFirst({
+      where,
       select: {
         id: true,
         role: true,

@@ -18,7 +18,7 @@ export const removeMemberOfOrganization = async (app: FastifyInstance) => {
           memberId: z.string({ description: 'Member Id' }),
         }),
         response: {
-          204: null,
+          204: z.null(),
         },
       },
     },

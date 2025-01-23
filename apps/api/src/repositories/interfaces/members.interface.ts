@@ -1,4 +1,4 @@
-import type { Member, Role } from '@prisma/client';
+import type { Member, Prisma, Role } from '@prisma/client';
 import { roleSchema } from '@saas-rbac/auth/src/roles';
 import { z } from 'zod';
 
@@ -28,6 +28,11 @@ export interface IMembersRepository {
   ): Promise<MemberDTO>;
   removeOfOrganization(memberId: string, organizationId: string): Promise<void>;
   findMany(organizationId: string): Promise<MemberDTO[] | null>;
+  findFirst({
+    where,
+  }: {
+    where: Prisma.MemberWhereInput;
+  }): Promise<MemberDTO | null>;
   findByUserId(userId: string): Promise<Member | null>;
   findUserMemberOfOrganization(
     userId: string,
