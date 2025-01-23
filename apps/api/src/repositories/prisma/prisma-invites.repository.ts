@@ -79,4 +79,33 @@ export class PrismaInvitesRepository implements IInvitesRepository {
 
     return invite;
   }
+
+  async listInvites({
+    where,
+  }: {
+    where: Prisma.InviteWhereInput;
+  }): Promise<InviteDTO[] | null> {
+    const invites = await prisma.invite.findMany({
+      where,
+      select: {
+        id: true,
+        role: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return invites;
+  }
 }

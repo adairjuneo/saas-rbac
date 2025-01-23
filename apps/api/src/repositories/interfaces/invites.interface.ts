@@ -14,14 +14,16 @@ export const inviteSchema = z.object({
       name: z.string().nullable(),
       avatarUrl: z.string().nullable(),
     })
-    .nullable(),
+    .nullable()
+    .optional(),
   organization: z
     .object({
       id: z.string(),
       name: z.string().nullable(),
       avatarUrl: z.string().nullable(),
     })
-    .nullable(),
+    .nullable()
+    .optional(),
 });
 
 export type InviteDTO = z.infer<typeof inviteSchema>;
@@ -38,4 +40,9 @@ export interface IInvitesRepository {
   }: {
     where: Prisma.InviteWhereUniqueInput;
   }): Promise<InviteDTO | null>;
+  listInvites({
+    where,
+  }: {
+    where: Prisma.InviteWhereInput;
+  }): Promise<InviteDTO[] | null>;
 }

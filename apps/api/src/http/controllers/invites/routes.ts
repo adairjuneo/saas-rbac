@@ -4,8 +4,10 @@ import { auth } from '@/http/middlewares/auth';
 
 import { createInvite } from './create-invite.controller';
 import { getInviteDetails } from './get-invite-details.controller';
+import { listInvitesOfOrganization } from './list-invite-of-organization.controller';
 
 export const invitesRoutes = async (app: FastifyInstance) => {
   app.register(auth).register(createInvite);
-  app.register(auth).register(getInviteDetails);
+  app.register(getInviteDetails);
+  app.register(auth).register(listInvitesOfOrganization);
 };
