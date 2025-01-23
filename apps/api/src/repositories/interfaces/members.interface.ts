@@ -21,6 +21,11 @@ export type MemberDTO = z.infer<typeof membersSchema>;
 export type CreateUpdateMemberDTO = z.infer<typeof createUpdateMembersSchema>;
 
 export interface IMembersRepository {
+  create(
+    memberId: string,
+    organizationId: string,
+    role: Role
+  ): Promise<MemberDTO>;
   update(
     memberId: string,
     organizationId: string,

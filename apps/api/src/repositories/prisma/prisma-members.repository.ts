@@ -9,6 +9,34 @@ import type {
 } from '../interfaces/members.interface';
 
 export class PrismaMembersRepository implements IMembersRepository {
+  async create(
+    memberId: string,
+    organizationId: string,
+    role: Role
+  ): Promise<MemberDTO> {
+    const member = await prisma.member.create({
+      data: {
+        userId: memberId,
+        organizationId,
+        role,
+      },
+      select: {
+        id: true,
+        role: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    });
+
+    return member;
+  }
+
   async update(
     memberId: string,
     organizationId: string,

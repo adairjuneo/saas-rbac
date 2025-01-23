@@ -47,6 +47,14 @@ export class PrismaInvitesRepository implements IInvitesRepository {
     return invite;
   }
 
+  async delete({
+    where,
+  }: {
+    where: Prisma.InviteWhereUniqueInput;
+  }): Promise<void> {
+    await prisma.invite.delete({ where });
+  }
+
   async findUnique({
     where,
   }: {

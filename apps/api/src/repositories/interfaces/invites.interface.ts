@@ -35,6 +35,7 @@ export interface IInvitesRepository {
     email: string,
     role: Role
   ): Promise<InviteDTO>;
+  delete({ where }: { where: Prisma.InviteWhereUniqueInput }): Promise<void>;
   findUnique({
     where,
   }: {

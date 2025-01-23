@@ -11,7 +11,7 @@ export const getInviteDetails = async (app: FastifyInstance) => {
     {
       schema: {
         tags: ['invites'],
-        summary: 'Get a project details',
+        summary: 'Get a invite details',
         params: z.object({
           inviteId: z.string({ description: 'Invite Id' }),
         }),
