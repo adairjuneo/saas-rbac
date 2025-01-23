@@ -31,10 +31,14 @@ class CreateInviteUseCase {
   ): Promise<CreateInviteUseCaseResponse> {
     const { organizationId, authorId, email, role } = dataExecute;
 
-    const inviteWithSameEmail = await this.invitesRepository.findUnique(
-      email,
-      organizationId
-    );
+    const inviteWithSameEmail = await this.invitesRepository.findUnique({
+      where: {
+        email_organizationId: {
+          email,
+          organizationId,
+        },
+      },
+    });
 
     if (inviteWithSameEmail) {
       throw new BadRequestError(

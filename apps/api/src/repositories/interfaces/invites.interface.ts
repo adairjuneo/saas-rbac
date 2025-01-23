@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client';
+import type { Prisma, Role } from '@prisma/client';
 import { roleSchema } from '@saas-rbac/auth/src/roles';
 import { z } from 'zod';
 
@@ -8,6 +8,20 @@ export const inviteSchema = z.object({
   email: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  author: z
+    .object({
+      id: z.string(),
+      name: z.string().nullable(),
+      avatarUrl: z.string().nullable(),
+    })
+    .nullable(),
+  organization: z
+    .object({
+      id: z.string(),
+      name: z.string().nullable(),
+      avatarUrl: z.string().nullable(),
+    })
+    .nullable(),
 });
 
 export type InviteDTO = z.infer<typeof inviteSchema>;
@@ -19,5 +33,9 @@ export interface IInvitesRepository {
     email: string,
     role: Role
   ): Promise<InviteDTO>;
-  findUnique(email: string, organizationId: string): Promise<InviteDTO | null>;
+  findUnique({
+    where,
+  }: {
+    where: Prisma.InviteWhereUniqueInput;
+  }): Promise<InviteDTO | null>;
 }

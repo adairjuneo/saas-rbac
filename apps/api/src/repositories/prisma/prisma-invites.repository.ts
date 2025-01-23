@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client';
+import type { Prisma, Role } from '@prisma/client';
 
 import { prisma } from '@/lib/prisma';
 
@@ -27,29 +27,53 @@ export class PrismaInvitesRepository implements IInvitesRepository {
         email: true,
         createdAt: true,
         updatedAt: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
       },
     });
 
     return invite;
   }
 
-  async findUnique(
-    organizationId: string,
-    email: string
-  ): Promise<InviteDTO | null> {
+  async findUnique({
+    where,
+  }: {
+    where: Prisma.InviteWhereUniqueInput;
+  }): Promise<InviteDTO | null> {
     const invite = await prisma.invite.findUnique({
-      where: {
-        email_organizationId: {
-          email,
-          organizationId,
-        },
-      },
+      where,
       select: {
         id: true,
         role: true,
         email: true,
         createdAt: true,
         updatedAt: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
       },
     });
 
