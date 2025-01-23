@@ -32,6 +32,12 @@ export class PrismaProjectsRepository implements IProjectsRepository {
     });
   }
 
+  async count({ where }: { where: Prisma.ProjectWhereInput }): Promise<number> {
+    const amount = await prisma.project.count({ where });
+
+    return amount;
+  }
+
   async findMany(organizationId: string): Promise<Project[] | null> {
     const project = await prisma.project.findMany({
       where: { organizationId },

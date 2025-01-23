@@ -67,6 +67,12 @@ export class PrismaMembersRepository implements IMembersRepository {
     return member;
   }
 
+  async count({ where }: { where: Prisma.MemberWhereInput }): Promise<number> {
+    const amount = await prisma.member.count({ where });
+
+    return amount;
+  }
+
   async removeOfOrganization(
     memberId: string,
     organizationId: string

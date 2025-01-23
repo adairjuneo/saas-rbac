@@ -31,6 +31,7 @@ export interface IMembersRepository {
     organizationId: string,
     data: CreateUpdateMemberDTO
   ): Promise<MemberDTO>;
+  count({ where }: { where: Prisma.MemberWhereInput }): Promise<number>;
   removeOfOrganization(memberId: string, organizationId: string): Promise<void>;
   findMany(organizationId: string): Promise<MemberDTO[] | null>;
   findFirst({

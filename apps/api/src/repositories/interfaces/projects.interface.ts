@@ -7,6 +7,7 @@ export interface IProjectsRepository {
     projectId: string,
     data: Prisma.ProjectUncheckedUpdateInput
   ): Promise<void>;
+  count({ where }: { where: Prisma.ProjectWhereInput }): Promise<number>;
   findMany(organizationId: string): Promise<Project[] | null>;
   findUnique(
     projectId: string | null,
