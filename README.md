@@ -25,14 +25,14 @@ SAAS Multi-tenant with RBAC(Role based authentication control);
 
 ### Invites
 
-- [ ] It should be able to invite a new member (e-mail, role);
-- [ ] It should be able to accept an invite;
-- [ ] It should be able to revoke a pending invite;
+- [x] It should be able to invite a new member (e-mail, role);
+- [x] It should be able to accept an invite;
+- [x] It should be able to revoke a pending invite;
 
 ### Members
 
-- [ ] It should be able to get organization members;
-- [ ] It should be able to update a member role;
+- [x] It should be able to get organization members;
+- [x] It should be able to update a member role;
 
 ### Projects
 
@@ -43,7 +43,7 @@ SAAS Multi-tenant with RBAC(Role based authentication control);
 
 ### Billing
 
-- [ ] It should be able to get billing details for organization ($20 per project / $10 per member excluding billing role);
+- [x] It should be able to get billing details for organization ($20 per project / $10 per member excluding billing role);
 
 ## RBAC
 
@@ -87,4 +87,4 @@ Roles & permissions.
 - Members can leave their own organization;
 
 _This is a repositories contain my studies about develop a saas multi-tenant with RBAC(Role based authentication control)._
-[dev-juneo](https://github.com/adairjuneoaf)
+[dev-juneo](https://github.com/adairjuneo)
