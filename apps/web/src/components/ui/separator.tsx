@@ -16,7 +16,7 @@ const Separator = ({
   orientation = 'horizontal',
   decorative = true,
   ...props
-}: SeparatorProps) => {
+}: SeparatorProps) => (
   <SeparatorPrimitive.Root
     ref={ref}
     decorative={decorative}
@@ -27,8 +27,8 @@ const Separator = ({
       className
     )}
     {...props}
-  />;
-};
+  />
+);
 
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 
