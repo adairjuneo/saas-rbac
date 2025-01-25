@@ -14,6 +14,8 @@ interface SignInWithPasswordResponse {
 export const signInWithPassword = async (
   request: SignInWithPasswordRequest
 ) => {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   const result = await api
     .post('api/auth/create-session-password', {
       json: {
