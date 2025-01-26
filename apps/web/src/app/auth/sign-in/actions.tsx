@@ -8,21 +8,18 @@ import { signInWithPassword } from '@/http/auth/sign-in-with-password';
 const signInSchema = z.object({
   email: z
     .string()
-    .email({ message: 'Provide a valid e-mail address.' })
-    .min(1, { message: 'Field is required.' }),
+    .min(1, { message: 'Field is required.' })
+    .email({ message: 'Provide a valid e-mail address.' }),
   password: z.string().min(1, { message: 'Field is required.' }),
 });
 
-export const signInWithEmailAndPassword = async (
-  _: unknown,
-  data: FormData
-) => {
+export const signInWithEmailAndPassword = async (data: FormData) => {
   const result = signInSchema.safeParse(Object.fromEntries(data));
 
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors;
 
-    return { sucess: false, message: null, errors };
+    return { success: false, message: null, errors };
   }
 
   const { email, password } = result.data;
@@ -30,18 +27,18 @@ export const signInWithEmailAndPassword = async (
   try {
     const { content } = await signInWithPassword({ email, password });
 
-    return { sucess: true, message: content, errors: null };
+    return { success: true, message: content, errors: null };
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = await error.response.json();
 
-      return { sucess: false, message, errors: null };
+      return { success: false, message, errors: null };
     }
 
     console.error(error);
 
     return {
-      sucess: false,
+      success: false,
       message: 'Unexpected error, try in a few minutes.',
       errors: null,
     };

@@ -3,8 +3,8 @@
 import { AlertTriangle, LoaderCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useActionState } from 'react';
 
+import { useFormState } from '@/app/hooks/use-form-state';
 import gitHubIcon from '@/assets/github-icon.svg';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -15,18 +15,17 @@ import { Separator } from '@/components/ui/separator';
 import { signInWithEmailAndPassword } from './actions';
 
 export default function SignInForm() {
-  const [state, formAction, isPending] = useActionState(
-    signInWithEmailAndPassword,
-    null
+  const [formState, handleSubmit, isPending] = useFormState(
+    signInWithEmailAndPassword
   );
 
   return (
-    <form action={formAction} className="space-y-4">
-      {!state?.sucess && state?.message && (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {!formState?.success && formState?.message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
           <AlertTitle>Sign in failed!</AlertTitle>
-          <AlertDescription>{state.message}</AlertDescription>
+          <AlertDescription>{formState.message}</AlertDescription>
         </Alert>
       )}
 
@@ -34,9 +33,9 @@ export default function SignInForm() {
         <Label htmlFor="email">E-mail</Label>
         <Input autoFocus id="email" name="email" type="email" />
 
-        {state?.errors?.email && (
+        {formState?.errors?.email && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {state.errors.email[0]}
+            {formState.errors.email[0]}
           </p>
         )}
       </div>
@@ -45,9 +44,9 @@ export default function SignInForm() {
         <Label htmlFor="password">Password</Label>
         <Input id="password" name="password" type="password" />
 
-        {state?.errors?.password && (
+        {formState?.errors?.password && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {state.errors.password[0]}
+            {formState.errors.password[0]}
           </p>
         )}
       </div>
