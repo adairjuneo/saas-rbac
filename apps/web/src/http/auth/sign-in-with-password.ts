@@ -15,7 +15,7 @@ export const signInWithPassword = async (
   request: SignInWithPasswordRequest
 ) => {
   const result = await api
-    .post('api/auth/create-session-password', {
+    .post('auth/create-session-password', {
       json: {
         email: request.email,
         password: request.password,

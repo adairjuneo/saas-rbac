@@ -6,13 +6,13 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Fragment, useActionState } from 'react';
 
-import { useFormState } from '@/app/hooks/use-form-state';
 import gitHubIcon from '@/assets/github-icon.svg';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { useFormState } from '@/hooks/use-form-state';
 
 import { signInWithGitHub } from '../actions';
 import { signInWithEmailAndPassword } from './actions';
@@ -105,8 +105,6 @@ export default function SignInForm() {
           variant="outline"
           className="w-full"
         >
-          {/* <Image src={gitHubIcon} className="mr-1 size-4 dark:invert" alt="" />
-          Sign in with GitHub */}
           {!isPendingWithGithub ? (
             <Fragment>
               <Image

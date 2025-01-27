@@ -12,7 +12,7 @@ interface SignInWithGitHubResponse {
 
 export const signInWithGitHub = async (request: SignInWithGitHubRequest) => {
   const result = await api
-    .post('api/auth/create-session-github', {
+    .post('auth/create-session-github', {
       json: {
         code: request.code,
       },
