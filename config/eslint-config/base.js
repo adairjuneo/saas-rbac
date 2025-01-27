@@ -28,7 +28,13 @@ export const config = [
       'turbo/no-undeclared-env-vars': 'warn',
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
-      '@typescript-eslint/no-unused-vars': ['warn'],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: 'req|res|next|__',
+          destructuredArrayIgnorePattern: '__',
+        },
+      ],
       semi: ['warn', 'always'],
       'semi-spacing': 'error',
       quotes: ['error', 'single'],

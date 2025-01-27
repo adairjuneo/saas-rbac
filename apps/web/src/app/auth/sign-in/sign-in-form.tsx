@@ -4,6 +4,7 @@ import { AlertTriangle, LoaderCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { Fragment, useActionState } from 'react';
 
 import { useFormState } from '@/app/hooks/use-form-state';
 import gitHubIcon from '@/assets/github-icon.svg';
@@ -19,6 +20,10 @@ import { signInWithEmailAndPassword } from './actions';
 export default function SignInForm() {
   const router = useRouter();
 
+  const [__, authenticateWithGitHub, isPendingWithGithub] = useActionState(
+    signInWithGitHub,
+    null
+  );
   const [formState, handleSubmit, isPending] = useFormState(
     signInWithEmailAndPassword,
     () => {
@@ -67,7 +72,7 @@ export default function SignInForm() {
         </Link>
 
         <Button
-          disabled={isPending}
+          disabled={isPending || isPendingWithGithub}
           type="submit"
           variant="default"
           className="w-full"
@@ -80,7 +85,7 @@ export default function SignInForm() {
         </Button>
 
         <Button
-          disabled={isPending}
+          disabled={isPending || isPendingWithGithub}
           asChild
           type="submit"
           variant="link"
@@ -93,10 +98,27 @@ export default function SignInForm() {
 
       <Separator />
 
-      <form action={signInWithGitHub}>
-        <Button type="submit" variant="outline" className="w-full">
-          <Image src={gitHubIcon} className="mr-1 size-4 dark:invert" alt="" />
-          Sign in with GitHub
+      <form action={authenticateWithGitHub}>
+        <Button
+          disabled={isPending || isPendingWithGithub}
+          type="submit"
+          variant="outline"
+          className="w-full"
+        >
+          {/* <Image src={gitHubIcon} className="mr-1 size-4 dark:invert" alt="" />
+          Sign in with GitHub */}
+          {!isPendingWithGithub ? (
+            <Fragment>
+              <Image
+                src={gitHubIcon}
+                className="mr-1 size-4 dark:invert"
+                alt=""
+              />
+              Sign in with GitHub
+            </Fragment>
+          ) : (
+            <LoaderCircle className="size-4 animate-spin" />
+          )}
         </Button>
       </form>
     </div>
