@@ -24,7 +24,7 @@ const seed = async () => {
     data: {
       name: 'John Doe',
       email: 'john.doe@acme.com',
-      avatarUrl: faker.image.avatarGitHub(),
+      avatarUrl: faker.image.avatar(),
       passwordHash,
     },
   });
@@ -33,7 +33,7 @@ const seed = async () => {
     data: {
       name: faker.person.fullName(),
       email: faker.internet.email(),
-      avatarUrl: faker.image.avatarGitHub(),
+      avatarUrl: faker.image.avatar(),
       passwordHash,
     },
   });
@@ -42,12 +42,12 @@ const seed = async () => {
     data: {
       name: faker.person.fullName(),
       email: faker.internet.email(),
-      avatarUrl: faker.image.avatarGitHub(),
+      avatarUrl: faker.image.avatar(),
       passwordHash,
     },
   });
 
-  const users = [userOne, userTwo, userThre];
+  // const users = [userOne, userTwo, userThre];
 
   console.log(chalk.green('👥 Users created with successful!'));
 
@@ -62,7 +62,7 @@ const seed = async () => {
       slug: 'acme-admin',
       avatarUrl: faker.image.avatar(),
       shouldAttachUsersByDomain: true,
-      ownerId: users[0].id,
+      ownerId: userOne.id,
       projects: {
         createMany: {
           data: [
@@ -72,9 +72,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
             {
@@ -83,9 +83,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
             {
@@ -94,9 +94,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
           ],
@@ -106,15 +106,15 @@ const seed = async () => {
         createMany: {
           data: [
             {
-              userId: users[0].id,
+              userId: userOne.id,
               role: 'ADMIN',
             },
             {
-              userId: users[1].id,
+              userId: userTwo.id,
               role: 'MEMBER',
             },
             {
-              userId: users[2].id,
+              userId: userThre.id,
               role: 'MEMBER',
             },
           ],
@@ -135,7 +135,7 @@ const seed = async () => {
       slug: faker.internet.domainWord(),
       domain: faker.internet.domainName(),
       avatarUrl: faker.image.avatar(),
-      ownerId: users[0].id,
+      ownerId: userOne.id,
       projects: {
         createMany: {
           data: [
@@ -145,9 +145,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
             {
@@ -156,9 +156,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
             {
@@ -167,9 +167,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
           ],
@@ -179,15 +179,15 @@ const seed = async () => {
         createMany: {
           data: [
             {
-              userId: users[0].id,
+              userId: userOne.id,
               role: 'MEMBER',
             },
             {
-              userId: users[1].id,
+              userId: userTwo.id,
               role: 'ADMIN',
             },
             {
-              userId: users[2].id,
+              userId: userThre.id,
               role: 'MEMBER',
             },
           ],
@@ -208,7 +208,7 @@ const seed = async () => {
       slug: faker.internet.domainWord(),
       domain: faker.internet.domainName(),
       avatarUrl: faker.image.avatar(),
-      ownerId: users[0].id,
+      ownerId: userOne.id,
       projects: {
         createMany: {
           data: [
@@ -218,9 +218,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
             {
@@ -229,9 +229,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
             {
@@ -240,9 +240,9 @@ const seed = async () => {
               description: faker.lorem.sentence({ min: 5, max: 7 }),
               avatarUrl: faker.image.avatar(),
               ownerId: faker.helpers.arrayElement([
-                users[0].id,
-                users[1].id,
-                users[2].id,
+                userOne.id,
+                userTwo.id,
+                userThre.id,
               ]),
             },
           ],
@@ -252,15 +252,15 @@ const seed = async () => {
         createMany: {
           data: [
             {
-              userId: users[0].id,
+              userId: userOne.id,
+              role: 'BILLING',
+            },
+            {
+              userId: userTwo.id,
               role: 'ADMIN',
             },
             {
-              userId: users[1].id,
-              role: 'MEMBER',
-            },
-            {
-              userId: users[2].id,
+              userId: userThre.id,
               role: 'MEMBER',
             },
           ],

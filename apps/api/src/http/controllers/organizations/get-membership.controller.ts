@@ -17,6 +17,7 @@ export const getMembership = async (app: FastifyInstance) => {
             content: z.object({
               id: z.string(),
               role: z.string(),
+              userId: z.string(),
               organizationId: z.string(),
             }),
           }),
@@ -27,12 +28,13 @@ export const getMembership = async (app: FastifyInstance) => {
       const { slug } = request.params;
       const { membership } = await request.getCurrentMembership(slug);
 
-      const { id, role, organizationId } = membership;
+      const { id, role, userId, organizationId } = membership;
 
       reply.status(200).send({
         content: {
           id,
           role,
+          userId,
           organizationId,
         },
       });

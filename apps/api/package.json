@@ -8,6 +8,7 @@
     "dev": "npm run env:load tsx watch src/server.ts",
     "start": "npm run env:load node dist/server.js",
     "build": "tsup src --out-dir dist",
+    "db:seed": "npm run env:load npx prisma db seed",
     "db:studio": "npm run env:load npx prisma studio",
     "db:migratedev": "npm run env:load npx prisma migrate dev",
     "test": "npm run env:load vitest run --dir src",
