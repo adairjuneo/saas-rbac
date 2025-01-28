@@ -5,7 +5,7 @@ import React from 'react';
 
 export const metadata: Metadata = {
   title: 'SaaS RBAC App',
-  description: 'Home - Saas RBAC App',
+  description: 'Home - SaaS RBAC App',
 };
 
 export default async function AppLayout({
