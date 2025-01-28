@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
+import { Header } from '@/components/header';
+
 export const metadata: Metadata = {
   title: 'SaaS RBAC App',
   description: 'Home - SaaS RBAC App',
@@ -19,5 +21,10 @@ export default async function AppLayout({
     redirect('/auth/sign-in');
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return (
+    <React.Fragment>
+      <Header />
+      {children}
+    </React.Fragment>
+  );
 }

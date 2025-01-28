@@ -1,4 +1,5 @@
 import { ChevronsUpDown, PlusCircle } from 'lucide-react';
+import { cookies } from 'next/headers';
 
 import { listOrganizations } from '@/http/organizations/list-organizations';
 
@@ -24,13 +25,39 @@ const getInitialByName = (name: string) => {
 };
 
 export const OrganizationSwitcher = async () => {
+  const cookiesStore = await cookies();
+  const currentOrgSlug = cookiesStore.get('org')?.value;
+
   const { content } = await listOrganizations();
+
+  const currentOrganization = content.find(
+    (org) => org.slug === currentOrgSlug
+  );
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex w-48 items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
-        <span className="text-muted-foreground">Select organization</span>
-        <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
+        {!currentOrganization ? (
+          <span className="text-muted-foreground">Select organization</span>
+        ) : (
+          <>
+            <Avatar className="mr-2 size-4">
+              {currentOrganization.avatarUrl && (
+                <AvatarImage src={currentOrganization.avatarUrl} alt="" />
+              )}
+              <AvatarFallback>
+                {getInitialByName(currentOrganization.name)}
+              </AvatarFallback>
+            </Avatar>
+            <span
+              className="truncate text-left"
+              title={currentOrganization.name}
+            >
+              {currentOrganization.name}
+            </span>
+          </>
+        )}
+        <ChevronsUpDown className="ml-auto size-4 min-w-5 text-muted-foreground" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
