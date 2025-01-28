@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default async function OrganizationProjects() {
+export default function OrganizationProjects() {
   return (
     <React.Fragment>
       <main>
