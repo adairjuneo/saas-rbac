@@ -24,7 +24,7 @@ export default async function AppLayout({
   return (
     <React.Fragment>
       <Header />
-      {children}
+      <main className="mx-auto w-full max-w-[75rem]">{children}</main>
     </React.Fragment>
   );
 }

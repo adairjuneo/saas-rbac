@@ -13,7 +13,7 @@ export const Header = async () => {
   const permissions = await getUserAbility();
 
   return (
-    <header className="mx-auto flex h-20 w-[75rem] items-center justify-between py-4">
+    <header className="mx-auto mb-4 flex h-20 w-[75rem] items-center justify-between border-b py-4 pb-2">
       <div className="flex items-center gap-3">
         <Image src={appLogo} alt="SaaS RBAC" className="size-6 dark:invert" />
 
