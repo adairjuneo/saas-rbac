@@ -3,7 +3,7 @@
   "ui": "tui",
   "globalEnv": [
     "NODE_ENV",
-    "PORT",
+    "API_PORT",
     "DATABASE_URL",
     "JWT_SECRET",
     "RESEND_API_KEY",
@@ -14,7 +14,8 @@
     "GITHUB_CLIENT_SECRET",
     "GITHUB_REDIRECT_URL",
     "GITHUB_USER_DATA_URL",
-    "GITHUB_ACCESS_TOKEN_URL"
+    "GITHUB_ACCESS_TOKEN_URL",
+    "NEXT_PUBLIC_API_URL"
   ],
   "tasks": {
     "build": {

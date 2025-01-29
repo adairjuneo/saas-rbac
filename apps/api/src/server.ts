@@ -64,12 +64,12 @@ app.register(appRoutes, { prefix: '/api' });
 app
   .listen({
     host: '0.0.0.0',
-    port: env.PORT,
+    port: env.API_PORT,
   })
   .then(() => {
     console.info(
       String(chalk.greenBright('🔥 HTTP Server Running on ')).concat(
-        chalk.yellowBright(`http://localhost:${env.PORT}`)
+        chalk.yellowBright(`http://localhost:${env.API_PORT}`)
       )
     );
   });

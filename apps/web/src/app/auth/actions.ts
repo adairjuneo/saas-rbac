@@ -8,10 +8,13 @@ export const signInWithGitHub = async () => {
     'https://github.com'
   );
 
-  gitHubSignInURL.searchParams.set('client_id', 'Ov23li17KuPVqIAJtoDA');
+  gitHubSignInURL.searchParams.set(
+    'client_id',
+    process.env.GITHUB_CLIENT_ID ?? ''
+  );
   gitHubSignInURL.searchParams.set(
     'redirect_url',
-    'http://localhost:3000/api/auth/callback'
+    process.env.GITHUB_REDIRECT_URL ?? ''
   );
   gitHubSignInURL.searchParams.set('scope', 'user:email');
 

@@ -1,10 +1,13 @@
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
-export const envSchema = createEnv({
+export const env = createEnv({
   server: {
-    NODE_ENV: z.enum(['dev', 'test', 'production']).default('dev'),
-    PORT: z.coerce.number().default(3333),
+    NODE_ENV: z
+      .enum(['dev', 'test', 'production'])
+      .default('dev')
+      .transform((value) => (value === 'dev' ? 'dev' : value)),
+    API_PORT: z.coerce.number().default(3333),
     DATABASE_URL: z.string().min(1),
     JWT_SECRET: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
@@ -21,11 +24,13 @@ export const envSchema = createEnv({
     // GITHUB_AUTHORIZE_URL: z.string().url(),
   },
   client: {},
-  shared: {},
+  shared: {
+    NEXT_PUBLIC_API_URL: z.string().url(),
+  },
   emptyStringAsUndefined: true,
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    PORT: process.env.PORT,
+    API_PORT: process.env.API_PORT,
     DATABASE_URL: process.env.DATABASE_URL,
     JWT_SECRET: process.env.JWT_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
@@ -37,5 +42,6 @@ export const envSchema = createEnv({
     GITHUB_REDIRECT_URL: process.env.GITHUB_REDIRECT_URL,
     GITHUB_USER_DATA_URL: process.env.GITHUB_USER_DATA_URL,
     GITHUB_ACCESS_TOKEN_URL: process.env.GITHUB_ACCESS_TOKEN_URL,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 });

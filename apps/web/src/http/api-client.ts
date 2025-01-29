@@ -3,7 +3,7 @@ import ky from 'ky';
 import { getAuthToken } from '@/app/actions';
 
 export const api = ky.create({
-  prefixUrl: 'http://localhost:3333/api',
+  prefixUrl: process.env.NEXT_PUBLIC_API_URL,
   hooks: {
     beforeRequest: [
       async (request) => {
