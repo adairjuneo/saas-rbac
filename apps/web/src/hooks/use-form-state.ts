@@ -6,9 +6,19 @@ export type FormState = {
   errors: Record<string, string[]> | null;
 };
 
+export type OnSucessResponse = {
+  message: string | null;
+};
+
+export type OnErrorResponse = {
+  errors: FormState['errors'];
+  message: string | null;
+};
+
 const useFormState = (
   action: (data: FormData) => Promise<FormState>,
-  onSuccess?: () => Promise<void> | void,
+  onSuccess?: (response?: OnSucessResponse) => Promise<void> | void,
+  onError?: (reponse?: OnErrorResponse) => Promise<void> | void,
   initialState?: FormState
 ) => {
   const [isPending, startTransition] = useTransition();
@@ -30,7 +40,11 @@ const useFormState = (
       const result = await action(dataForm);
 
       if (result.success === true && onSuccess) {
-        await onSuccess();
+        await onSuccess({ message: result.message });
+      }
+
+      if (result.success === false && onError) {
+        await onError({ message: result.message, errors: result.errors });
       }
 
       setFormState(result);

@@ -9,16 +9,30 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useFormState } from '@/hooks/use-form-state';
+import { useToast } from '@/hooks/use-toast';
 
 import { createNewOrganization } from './actions';
 
-export const CreateNewOrganizationForm = () => {
+export const OrganizationForm = () => {
+  const { toast } = useToast();
   const router = useRouter();
 
   const [formState, handleSubmit, isPending] = useFormState(
     createNewOrganization,
-    () => {
+    (response) => {
       router.push('/auth/sign-in');
+      toast({
+        variant: 'success',
+        title: 'Successfully saved the Organization',
+        description: response?.message,
+      });
+    },
+    (response) => {
+      toast({
+        variant: 'destructive',
+        title: 'Error to save Organization',
+        description: response?.message,
+      });
     }
   );
 
@@ -27,7 +41,7 @@ export const CreateNewOrganizationForm = () => {
       {!formState?.success && formState?.message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
-          <AlertTitle>Sign up failed!</AlertTitle>
+          <AlertTitle>Save organization failed!</AlertTitle>
           <AlertDescription>{formState.message}</AlertDescription>
         </Alert>
       )}
