@@ -1,5 +1,6 @@
 import { ChevronsUpDown, PlusCircle } from 'lucide-react';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 
 import { listOrganizations } from '@/http/organizations/list-organizations';
 
@@ -93,10 +94,10 @@ export const OrganizationSwitcher = async () => {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <a href="/create-organization">
+          <Link href="/create-organization">
             <PlusCircle className="mr-2 size-4" />
             Create new
-          </a>
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

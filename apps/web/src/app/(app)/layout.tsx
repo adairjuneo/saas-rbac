@@ -12,8 +12,10 @@ export const metadata: Metadata = {
 
 export default async function AppLayout({
   children,
+  drawer,
 }: Readonly<{
   children: React.ReactNode;
+  drawer: React.ReactNode;
 }>) {
   const isAuthenticated = !!(await cookies()).get('token')?.value;
 
@@ -24,7 +26,10 @@ export default async function AppLayout({
   return (
     <React.Fragment>
       <Header />
-      <main className="mx-auto w-full max-w-[75rem]">{children}</main>
+      <main className="mx-auto w-full max-w-[75rem]">
+        {children}
+        {drawer}
+      </main>
     </React.Fragment>
   );
 }
