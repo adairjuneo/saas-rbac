@@ -1,9 +1,8 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
-import { ThemeProvider } from 'next-themes';
 
-import { Toaster } from '@/components/ui/toaster';
+import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'SaaS RBAC App',
@@ -18,14 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-        <Toaster />
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

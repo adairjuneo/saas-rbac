@@ -24,6 +24,7 @@
     "@radix-ui/react-toast": "1.2.5",
     "@saas-rbac/auth": "*",
     "@saas-rbac/env": "*",
+    "@tanstack/react-query": "5.66.0",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "ky": "1.7.4",
