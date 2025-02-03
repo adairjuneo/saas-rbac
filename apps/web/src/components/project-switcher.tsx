@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ChevronsUpDown, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { Fragment } from 'react';
 
 import { listProjects } from '@/http/projects/list-projects';
 
@@ -17,6 +18,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import { Skeleton } from './ui/skeleton';
 
 const getInitialByName = (name: string) => {
   const initials = name
@@ -29,15 +31,20 @@ const getInitialByName = (name: string) => {
 };
 
 export const ProjectSwitcher = () => {
-  const { slug: orgSlug } = useParams<{ slug: string }>();
+  const { slug: orgSlug, project: projectSlug } = useParams<{
+    slug: string;
+    project: string;
+  }>();
 
-  const { data: content, isLoading } = useQuery({
+  const { data: projects, isLoading } = useQuery({
     queryFn: () => listProjects({ orgSlug }),
     queryKey: [orgSlug, 'projects'],
     enabled: !!orgSlug,
   });
 
-  console.log('projects =>> ', content);
+  const currentProject = projects?.content.find((project) => {
+    if (project.slug === projectSlug) return project;
+  });
 
   return (
     <DropdownMenu>
@@ -45,28 +52,39 @@ export const ProjectSwitcher = () => {
         disabled={isLoading}
         className="flex w-48 items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary"
       >
-        <span className="text-muted-foreground">Select project</span>
-        {/* {!currentOrganization ? (
-          <span className="text-muted-foreground">Select organization</span>
+        {isLoading ? (
+          <Fragment>
+            <Skeleton className="size-5 shrink-0 rounded-full" />
+            <Skeleton className="h-4 w-full" />
+          </Fragment>
         ) : (
-          <>
-            <Avatar className="mr-2 size-4">
-              {currentOrganization.avatarUrl && (
-                <AvatarImage src={currentOrganization.avatarUrl} alt="" />
-              )}
-              <AvatarFallback>
-                {getInitialByName(currentOrganization.name)}
-              </AvatarFallback>
-            </Avatar>
-            <span
-              className="truncate text-left"
-              title={currentOrganization.name}
-            >
-              {currentOrganization.name}
-            </span>
-          </>
-        )} */}
-        <ChevronsUpDown className="ml-auto size-4 min-w-5 text-muted-foreground" />
+          <Fragment>
+            {!currentProject ? (
+              <span className="text-muted-foreground">Select project</span>
+            ) : (
+              <>
+                <Avatar className="size-4">
+                  {currentProject.avatarUrl && (
+                    <AvatarImage src={currentProject.avatarUrl} alt="" />
+                  )}
+                  <AvatarFallback>
+                    {getInitialByName(currentProject.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span
+                  className="truncate text-left"
+                  title={currentProject.name}
+                >
+                  {currentProject.name}
+                </span>
+              </>
+            )}
+          </Fragment>
+        )}
+        <ChevronsUpDown
+          data-disabled={isLoading}
+          className={`ml-auto size-4 min-w-5 text-muted-foreground data-[disabled=true]:opacity-50`}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
@@ -76,39 +94,28 @@ export const ProjectSwitcher = () => {
       >
         <DropdownMenuGroup>
           <DropdownMenuLabel>Projects</DropdownMenuLabel>
-          <DropdownMenuItem asChild key={'id'} title={'name'}>
-            <Link href="#">
-              <Avatar className="mr-2 size-4">
-                <AvatarFallback>
-                  {getInitialByName('Project Test')}
-                </AvatarFallback>
-              </Avatar>
-              <span className="line-clamp-1">Projects Test</span>
-            </Link>
-          </DropdownMenuItem>
-          {/* {content.map((organization) => {
-            const orgPath = String('/organization/').concat(organization.slug);
+          {projects?.content.map((project) => {
+            const projectPath = String('/organization/')
+              .concat(orgSlug)
+              .concat('/project/')
+              .concat(project.slug);
 
             return (
-              <DropdownMenuItem
-                asChild
-                key={organization.id}
-                title={organization.name}
-              >
-                <a href={orgPath}>
-                  <Avatar className="mr-2 size-4">
-                    {organization.avatarUrl && (
-                      <AvatarImage src={organization.avatarUrl} alt="" />
+              <DropdownMenuItem asChild key={project.id} title={project.name}>
+                <Link href={projectPath}>
+                  <Avatar className="size-4">
+                    {project.avatarUrl && (
+                      <AvatarImage src={project.avatarUrl} alt="" />
                     )}
                     <AvatarFallback>
-                      {getInitialByName(organization.name)}
+                      {getInitialByName(project.name)}
                     </AvatarFallback>
                   </Avatar>
-                  <span className="line-clamp-1">{organization.name}</span>
-                </a>
+                  <span className="line-clamp-1">{project.name}</span>
+                </Link>
               </DropdownMenuItem>
             );
-          })} */}
+          })}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
