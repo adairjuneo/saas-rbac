@@ -16,7 +16,7 @@ export const createProject = async (app: FastifyInstance) => {
         body: z.object({
           name: z.string(),
           description: z.string(),
-          avatarUrl: z.string().url().optional(),
+          avatarUrl: z.string().url().optional().nullable(),
         }),
         params: z.object({
           slug: z.string({ description: 'Organization slug' }),

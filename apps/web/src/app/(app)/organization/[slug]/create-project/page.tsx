@@ -1,8 +1,23 @@
+import { redirect } from 'next/navigation';
 import React from 'react';
+
+import { getUserAbility } from '@/auth/user-membership';
 
 import { ProjectForm } from './form';
 
-export default function CreateProject() {
+interface CreateProjectProps {
+  params: Promise<{ slug: string }>;
+}
+
+export default async function CreateProject({ params }: CreateProjectProps) {
+  const { slug: orgSlug } = await params;
+
+  const permissions = await getUserAbility();
+
+  if (permissions?.cannot('create', 'Project')) {
+    redirect(String('/organization/').concat(orgSlug));
+  }
+
   return (
     <React.Fragment>
       <div className="flex flex-col items-center">

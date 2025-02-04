@@ -1,21 +1,20 @@
+import { ProjectForm } from '@/app/(app)/organization/[slug]/create-project/form';
 import { InterceptedSheetContent } from '@/components/intercepted-sheet-content';
 import { Sheet, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-
-import { OrganizationForm } from '../../create-organization/form';
 
 export default function CreateOrganizationDrawer() {
   return (
     <Sheet defaultOpen>
       <InterceptedSheetContent
         className="min-w-[25%]"
-        aria-describedby="Create organization"
+        aria-describedby="Create project"
       >
         <SheetHeader>
-          <SheetTitle>Create organization</SheetTitle>
+          <SheetTitle>Create project</SheetTitle>
         </SheetHeader>
 
         <div className="py-4">
-          <OrganizationForm />
+          <ProjectForm />
         </div>
       </InterceptedSheetContent>
     </Sheet>

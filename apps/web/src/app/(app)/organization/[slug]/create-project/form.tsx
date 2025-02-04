@@ -1,7 +1,7 @@
 'use client';
 
 import { AlertTriangle, LoaderCircle } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -10,21 +10,26 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useFormState } from '@/hooks/use-form-state';
 import { useToast } from '@/hooks/use-toast';
+import { queryClient } from '@/lib/react-query';
 
 import { createNewProject } from './actions';
 
 export const ProjectForm = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const { slug: orgSlug } = useParams<{ slug: string }>();
 
   const [formState, handleSubmit, isPending] = useFormState(
     createNewProject,
     (response) => {
-      router.push('/');
+      router.back();
       toast({
         variant: 'success',
         title: 'Successfully saved the Project',
         description: response?.message,
+      });
+      queryClient.invalidateQueries({
+        queryKey: [orgSlug, 'projects'],
       });
     },
     (response) => {
