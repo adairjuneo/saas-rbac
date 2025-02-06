@@ -3,6 +3,7 @@
 import { HTTPError } from 'ky';
 import { cookies } from 'next/headers';
 
+import { getOrganizationDetails } from '@/http/organizations/get-user-membership copy';
 import { deleteOrganization } from '@/http/organizations/shutdown-organization';
 
 export const shutdownOrganization = async (__: FormData) => {
@@ -37,4 +38,16 @@ export const shutdownOrganization = async (__: FormData) => {
   }
 
   return { success: true, message: null, errors: null };
+};
+
+export const getCurrentOrgToUpdate = async () => {
+  const cookiesStore = await cookies();
+  const orgSlug = cookiesStore.get('org')?.value ?? null;
+
+  try {
+    const { content } = await getOrganizationDetails({ orgSlug: orgSlug! });
+    return content;
+  } catch (error) {
+    console.error(error);
+  }
 };

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { OrganizationForm } from './form';
 
-export default function CreateOrganization() {
+export default async function CreateOrganization() {
   return (
     <React.Fragment>
       <div className="flex flex-col items-center">

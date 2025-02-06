@@ -1,7 +1,7 @@
 'use client';
 
 import { AlertTriangle, LoaderCircle } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -10,22 +10,42 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useFormState } from '@/hooks/use-form-state';
 import { useToast } from '@/hooks/use-toast';
+import { queryClient } from '@/lib/react-query';
 
-import { createNewOrganization } from './actions';
+import {
+  createNewOrganization,
+  type OrganizationSchema,
+  updateCurrentOrganization,
+} from './actions';
 
-export const OrganizationForm = () => {
+interface OrganizationFormProps {
+  isToUpdate?: boolean;
+  initialData?: OrganizationSchema;
+}
+
+export const OrganizationForm = ({
+  isToUpdate = false,
+  initialData,
+}: OrganizationFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
+  const { slug: orgSlug } = useParams<{ slug: string }>();
 
   const [formState, handleSubmit, isPending] = useFormState(
-    createNewOrganization,
+    !isToUpdate ? createNewOrganization : updateCurrentOrganization,
     (response) => {
-      router.push('/');
       toast({
         variant: 'success',
         title: 'Successfully saved the Organization',
         description: response?.message,
       });
+      if (!isToUpdate) {
+        router.back();
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: [orgSlug, 'projects'],
+        });
+      }
     },
     (response) => {
       toast({
@@ -54,6 +74,7 @@ export const OrganizationForm = () => {
           name="name"
           type="text"
           placeholder="Acme Org"
+          defaultValue={initialData?.name}
         />
 
         {formState?.errors?.name && (
@@ -71,6 +92,7 @@ export const OrganizationForm = () => {
           type="text"
           inputMode="url"
           placeholder="acme.com"
+          defaultValue={initialData?.domain}
         />
 
         {formState?.errors?.domain && (
@@ -86,6 +108,7 @@ export const OrganizationForm = () => {
             id="shouldAttachUsersByDomain"
             name="shouldAttachUsersByDomain"
             className="translate-y-1"
+            defaultChecked={initialData?.shouldAttachUsersByDomain}
           />
 
           <label htmlFor="shouldAttachUsersByDomain" className="space-y-2">

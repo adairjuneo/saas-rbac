@@ -10,10 +10,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 
+import { getCurrentOrgToUpdate } from './actions';
 import { ShutdownOrganizationButton } from './shutdown-organization-button';
 
 export default async function SettingsPage() {
   const permissions = await getUserAbility();
+  const currentOrganization = await getCurrentOrgToUpdate();
 
   const canUpdateOrganization = permissions?.can('update', 'Organization');
   const canGetBilling = permissions?.can('get', 'Billing');
@@ -32,7 +34,15 @@ export default async function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <OrganizationForm />
+              <OrganizationForm
+                isToUpdate
+                initialData={{
+                  name: currentOrganization?.name ?? '',
+                  domain: currentOrganization?.domain ?? '',
+                  shouldAttachUsersByDomain:
+                    currentOrganization?.shouldAttachUsersByDomain ?? false,
+                }}
+              />
             </CardContent>
           </Card>
         )}
