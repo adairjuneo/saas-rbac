@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/card';
 
 import { getCurrentOrgToUpdate } from './actions';
+import { BillingCard } from './billing-card';
 import { ShutdownOrganizationButton } from './shutdown-organization-button';
 
 export default async function SettingsPage() {
@@ -47,19 +48,7 @@ export default async function SettingsPage() {
           </Card>
         )}
 
-        {canGetBilling && (
-          <Card>
-            <CardHeader>
-              <CardTitle>Billing details</CardTitle>
-              <CardDescription>
-                Billing details about this organization.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Billing details</p>
-            </CardContent>
-          </Card>
-        )}
+        {canGetBilling && <BillingCard />}
 
         {canShutdownOrganization && (
           <Card>
