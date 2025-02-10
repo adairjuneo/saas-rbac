@@ -54,8 +54,9 @@ export function RemoveMemberButton(props: RemoveMemberButton) {
         <Button
           variant="destructive"
           size="sm"
+          tabIndex={isBeAbleToDeleteMember && !isTheOwner && !itsMe ? 0 : -1}
           data-action-allowed={isBeAbleToDeleteMember && !isTheOwner && !itsMe}
-          className="border border-border data-[action-allowed=false]:invisible"
+          className="border border-border data-[action-allowed=false]:sr-only"
         >
           <UserMinus className="mr2 size-4" />
           Remove

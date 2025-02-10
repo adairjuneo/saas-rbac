@@ -12,6 +12,7 @@ import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
 import { getCurentOrganization, getListOfMembers } from './actions';
 import { RemoveMemberButton } from './remove-member-button';
+import UpdateMemberRoleSelect from './update-member-role-select';
 
 const getInitialByName = (name: string) => {
   const initials = name
@@ -89,14 +90,21 @@ export default async function ListMembers() {
                       <Button
                         variant="ghost"
                         size="sm"
+                        tabIndex={
+                          isBeAbleToTransferOwnership && !isTheOwner ? 0 : -1
+                        }
                         data-action-allowed={
                           isBeAbleToTransferOwnership && !isTheOwner
                         }
-                        className="border border-border text-muted-foreground data-[action-allowed=false]:invisible"
+                        className="border border-border text-muted-foreground data-[action-allowed=false]:sr-only"
                       >
                         <ArrowLeftRight className="mr2 size-4" />
                         Transfer Ownership
                       </Button>
+                      <UpdateMemberRoleSelect
+                        value={member.role}
+                        memberId={member.id}
+                      />
                       <RemoveMemberButton
                         memberId={member.id}
                         itsMe={itsMe}

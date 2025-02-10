@@ -94,3 +94,55 @@ export const removeMemberOfOrganization = async (data: FormData) => {
 
   return { success: true, message: null, errors: null };
 };
+
+const updateRoleMemberSchema = z.object({
+  memberId: z.string().min(1, { message: 'Field is required.' }),
+  role: z.string().min(1, { message: 'Field is required.' }),
+});
+
+export const updateRoleMemberInOrganization = async (data: FormData) => {
+  const cookiesStore = await cookies();
+  const result = updateRoleMemberSchema.safeParse(Object.fromEntries(data));
+  const orgSlug = cookiesStore.get('org')?.value ?? null;
+
+  if (!orgSlug) {
+    return {
+      success: false,
+      message:
+        'Need to provide the organization slug to update the member Role.',
+      errors: null,
+    };
+  }
+
+  if (!result.data?.memberId || !result.data?.role) {
+    return {
+      success: false,
+      message:
+        'Need to provide the member id and role to update the member Role.',
+      errors: null,
+    };
+  }
+
+  const { memberId } = result.data;
+
+  try {
+    await removeMember({ orgSlug, memberId });
+    revalidateTag(String(orgSlug).concat('/members'));
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      const { message } = await error.response.json();
+
+      return { success: false, message, errors: null };
+    }
+
+    console.error(error);
+
+    return {
+      success: false,
+      message: 'Unexpected error, try in a few minutes.',
+      errors: null,
+    };
+  }
+
+  return { success: true, message: null, errors: null };
+};
