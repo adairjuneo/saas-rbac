@@ -1,5 +1,5 @@
 import { organizationSchema } from '@saas-rbac/auth';
-import { ArrowLeftRight } from 'lucide-react';
+import { ArrowLeftRight, Crown } from 'lucide-react';
 import React from 'react';
 
 import {
@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
 import { getCurentOrganization, getListOfMembers } from './actions';
+import { RemoveMemberButton } from './remove-member-button';
 
 const getInitialByName = (name: string) => {
   const initials = name
@@ -25,11 +26,19 @@ const getInitialByName = (name: string) => {
 export default async function ListMembers() {
   const permissions = await getUserAbility();
 
-  const members = await getListOfMembers();
-  const membership = await getCurrentUserMembership();
-  const currentOrg = await getCurentOrganization();
+  const [members, membership, currentOrg] = await Promise.all([
+    getListOfMembers(),
+    getCurrentUserMembership(),
+    getCurentOrganization(),
+  ]);
 
   const parseToAuthOrg = organizationSchema.parse(currentOrg);
+
+  const isBeAbleToTransferOwnership = Boolean(
+    permissions?.can('transfer_ownership', parseToAuthOrg)
+  );
+
+  const isBeAbleToDeleteMember = Boolean(permissions?.can('delete', 'User'));
 
   return (
     <React.Fragment>
@@ -38,6 +47,9 @@ export default async function ListMembers() {
         <Table>
           <TableBody>
             {members?.map((member) => {
+              const isTheOwner = member.user.id === currentOrg?.ownerId;
+              const itsMe = membership?.userId === member.user.id;
+
               return (
                 <TableRow key={member.id}>
                   <TableCell className="py-2.5" style={{ width: '3rem' }}>
@@ -60,7 +72,12 @@ export default async function ListMembers() {
                     <div className="flex flex-col">
                       <span className="gap2 inline-flex items-center font-medium">
                         {member.user.name}
-                        {membership?.userId === member.user.id && ' (me)'}
+                        {itsMe && ' (me)'}
+                        {isTheOwner && (
+                          <span className="ml-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
+                            <Crown className="size-4" /> Owner
+                          </span>
+                        )}
                       </span>
                       <span className="text-xs text-muted-foreground">
                         {member.user.email}
@@ -69,19 +86,23 @@ export default async function ListMembers() {
                   </TableCell>
                   <TableCell className="py-2.5">
                     <div className="flex items-center justify-end gap-2">
-                      {permissions?.can(
-                        'transfer_ownership',
-                        parseToAuthOrg
-                      ) && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="border border-border text-muted-foreground"
-                        >
-                          <ArrowLeftRight className="mr2 size-4" />
-                          Transfer Ownership
-                        </Button>
-                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        data-action-allowed={
+                          isBeAbleToTransferOwnership && !isTheOwner
+                        }
+                        className="border border-border text-muted-foreground data-[action-allowed=false]:invisible"
+                      >
+                        <ArrowLeftRight className="mr2 size-4" />
+                        Transfer Ownership
+                      </Button>
+                      <RemoveMemberButton
+                        memberId={member.id}
+                        itsMe={itsMe}
+                        isTheOwner={isTheOwner}
+                        isBeAbleToDeleteMember={isBeAbleToDeleteMember}
+                      />
                     </div>
                   </TableCell>
                 </TableRow>

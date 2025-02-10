@@ -21,7 +21,9 @@ interface ListMembersResponse {
 
 export const listMembers = async ({ orgSlug }: ListMembersRequest) => {
   const url = 'members/'.concat(orgSlug).concat('/list-members');
-  const result = await api.get(url).json<ListMembersResponse>();
+  const result = await api
+    .get(url, { next: { tags: [String(orgSlug).concat('/members')] } })
+    .json<ListMembersResponse>();
 
   return result;
 };

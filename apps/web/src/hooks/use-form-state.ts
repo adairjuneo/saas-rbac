@@ -15,8 +15,8 @@ export type OnErrorResponse = {
   message: string | null;
 };
 
-const useFormState = (
-  action: (data: FormData) => Promise<FormState>,
+const useFormState = <TAData = FormData>(
+  action: (data: TAData) => Promise<FormState>,
   onSuccess?: (response?: OnSucessResponse) => Promise<void> | void,
   onError?: (reponse?: OnErrorResponse) => Promise<void> | void,
   initialState?: FormState
@@ -34,7 +34,7 @@ const useFormState = (
     event.preventDefault();
 
     const form = event.currentTarget;
-    const dataForm = new FormData(form);
+    const dataForm = new FormData(form) as TAData;
 
     startTransition(async () => {
       const result = await action(dataForm);

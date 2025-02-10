@@ -25,7 +25,7 @@ export const getUserAbility = async () => {
   }
 
   const ability = defineAbilityFor({
-    id: userMembership.id,
+    id: userMembership.userId,
     role: userMembership.role,
   });
 
