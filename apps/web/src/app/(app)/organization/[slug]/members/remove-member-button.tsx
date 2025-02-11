@@ -83,8 +83,8 @@ export function RemoveMemberButton(props: RemoveMemberButton) {
           <DialogFooter className="mt-1.5">
             <DialogClose asChild>
               <Button
-                disabled={isPending}
                 autoFocus
+                disabled={isPending}
                 type="button"
                 variant="outline"
                 size="sm"
@@ -93,6 +93,7 @@ export function RemoveMemberButton(props: RemoveMemberButton) {
               </Button>
             </DialogClose>
             <Button
+              className="w-32"
               disabled={isPending}
               type="submit"
               variant="destructive"

@@ -29,12 +29,16 @@ import { updateRoleMemberInOrganization } from './actions';
 
 interface UpdateMemberRoleSelectProps extends ComponentProps<typeof Select> {
   memberId: string;
+  itsMe: boolean;
+  isTheOwner: boolean;
+  isBeAbleToUpdateMember: boolean;
 }
 
 export default function UpdateMemberRoleSelect(
   props: UpdateMemberRoleSelectProps
 ) {
-  const { memberId, ...rest } = props;
+  const { memberId, itsMe, isTheOwner, isBeAbleToUpdateMember, ...rest } =
+    props;
   const { toast } = useToast();
   const [changingRole, setChangingRole] = useState(false);
 
@@ -65,12 +69,18 @@ export default function UpdateMemberRoleSelect(
     <Dialog open={changingRole}>
       <DialogTrigger asChild>
         <Select
+          form="update-member-role-form"
           name="role"
           onValueChange={confirmUpdateMemberRole}
           disabled={isPending}
           {...rest}
         >
-          <SelectTrigger className="h-9 w-32">
+          <SelectTrigger
+            disabled={itsMe}
+            tabIndex={!isTheOwner && isBeAbleToUpdateMember ? 0 : -1}
+            data-action-allowed={!isTheOwner && isBeAbleToUpdateMember}
+            className="h-9 w-32 data-[action-allowed=false]:sr-only"
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -84,7 +94,7 @@ export default function UpdateMemberRoleSelect(
         onEscapeKeyDown={onDismissChangingRole}
         onPointerDownOutside={onDismissChangingRole}
       >
-        <form onSubmit={handleSubmit}>
+        <form id="update-member-role-form" onSubmit={handleSubmit}>
           <Input
             tabIndex={-1}
             id="memberId"
@@ -109,8 +119,8 @@ export default function UpdateMemberRoleSelect(
           <DialogFooter className="mt-1.5">
             <DialogClose asChild>
               <Button
-                disabled={isPending}
                 autoFocus
+                disabled={isPending}
                 type="button"
                 variant="outline"
                 size="sm"
@@ -120,6 +130,7 @@ export default function UpdateMemberRoleSelect(
               </Button>
             </DialogClose>
             <Button
+              className="w-32"
               disabled={isPending}
               type="submit"
               variant="secondary"

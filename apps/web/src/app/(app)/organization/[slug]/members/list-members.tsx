@@ -40,6 +40,7 @@ export default async function ListMembers() {
   );
 
   const isBeAbleToDeleteMember = Boolean(permissions?.can('delete', 'User'));
+  const isBeAbleToUpdateMember = Boolean(permissions?.can('update', 'User'));
 
   return (
     <React.Fragment>
@@ -102,8 +103,11 @@ export default async function ListMembers() {
                         Transfer Ownership
                       </Button>
                       <UpdateMemberRoleSelect
-                        value={member.role}
+                        itsMe={itsMe}
+                        isTheOwner={isTheOwner}
+                        defaultValue={member.role}
                         memberId={member.id}
+                        isBeAbleToUpdateMember={isBeAbleToUpdateMember}
                       />
                       <RemoveMemberButton
                         memberId={member.id}

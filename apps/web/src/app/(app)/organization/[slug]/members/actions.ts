@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { listInvitesMembers } from '@/http/invites/list-invites';
 import { listMembers } from '@/http/members/list-members';
 import { removeMember } from '@/http/members/remove-member';
+import { updateMember } from '@/http/members/update-member';
 import { getOrganizationDetails } from '@/http/organizations/get-organization-details';
 
 export const getListOfMembers = async () => {
@@ -123,10 +124,10 @@ export const updateRoleMemberInOrganization = async (data: FormData) => {
     };
   }
 
-  const { memberId } = result.data;
+  const { memberId, role } = result.data;
 
   try {
-    await removeMember({ orgSlug, memberId });
+    await updateMember({ orgSlug, memberId, role });
     revalidateTag(String(orgSlug).concat('/members'));
   } catch (error) {
     if (error instanceof HTTPError) {
