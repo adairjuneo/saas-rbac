@@ -30,7 +30,9 @@ export const listInvitesMembers = async ({
   orgSlug,
 }: ListInvitesMembersRequest) => {
   const url = 'invites/'.concat(orgSlug).concat('/list-invites');
-  const result = await api.get(url).json<ListInvitesMembersResponse>();
+  const result = await api
+    .get(url, { next: { tags: [String(orgSlug).concat('/list-invites')] } })
+    .json<ListInvitesMembersResponse>();
 
   return result;
 };

@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { z } from 'zod';
 
 import { listInvitesMembers } from '@/http/invites/list-invites';
+import { revokeInvite } from '@/http/invites/revoke-invite';
 import { listMembers } from '@/http/members/list-members';
 import { removeMember } from '@/http/members/remove-member';
 import { updateMember } from '@/http/members/update-member';
@@ -129,6 +130,55 @@ export const updateRoleMemberInOrganization = async (data: FormData) => {
   try {
     await updateMember({ orgSlug, memberId, role });
     revalidateTag(String(orgSlug).concat('/members'));
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      const { message } = await error.response.json();
+
+      return { success: false, message, errors: null };
+    }
+
+    console.error(error);
+
+    return {
+      success: false,
+      message: 'Unexpected error, try in a few minutes.',
+      errors: null,
+    };
+  }
+
+  return { success: true, message: null, errors: null };
+};
+
+const revokeInviteSchema = z.object({
+  inviteId: z.string().min(1, { message: 'Field is required.' }),
+});
+
+export const revokeInviteForThisOrganization = async (data: FormData) => {
+  const cookiesStore = await cookies();
+  const result = revokeInviteSchema.safeParse(Object.fromEntries(data));
+  const orgSlug = cookiesStore.get('org')?.value ?? null;
+
+  if (!orgSlug) {
+    return {
+      success: false,
+      message: 'Need to provide the organization slug to revoke the invite.',
+      errors: null,
+    };
+  }
+
+  if (!result.data?.inviteId) {
+    return {
+      success: false,
+      message: 'Need to provide the invite id to revoke the invite.',
+      errors: null,
+    };
+  }
+
+  const { inviteId } = result.data;
+
+  try {
+    await revokeInvite({ orgSlug, inviteId });
+    revalidateTag(String(orgSlug).concat('/list-invites'));
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = await error.response.json();
