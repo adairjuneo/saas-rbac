@@ -2,7 +2,10 @@ import { Prisma, type Project } from '@prisma/client';
 
 import { prisma } from '@/lib/prisma';
 
-import type { IProjectsRepository } from '../interfaces/projects.interface';
+import type {
+  IProjectsRepository,
+  ProjectDTO,
+} from '../interfaces/projects.interface';
 
 export class PrismaProjectsRepository implements IProjectsRepository {
   async create(data: Prisma.ProjectUncheckedCreateInput): Promise<Project> {
@@ -38,7 +41,7 @@ export class PrismaProjectsRepository implements IProjectsRepository {
     return amount;
   }
 
-  async findMany(organizationId: string): Promise<Project[] | null> {
+  async findMany(organizationId: string): Promise<ProjectDTO[] | null> {
     const project = await prisma.project.findMany({
       where: { organizationId },
       select: {

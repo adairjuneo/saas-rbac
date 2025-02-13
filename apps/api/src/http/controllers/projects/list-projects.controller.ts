@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 import { UnauthorizedError } from '@/errors/unauthorized.error';
 import { createUserPermissions } from '@/lib/create-user-permissions';
+import { projectsSchema } from '@/repositories/interfaces/projects.interface';
 import { makeWithPrismaListProjectsUseCase } from '@/use-cases/list-projects.usecase';
 
 export const listProjects = async (app: FastifyInstance) => {
@@ -18,19 +19,7 @@ export const listProjects = async (app: FastifyInstance) => {
         }),
         response: {
           200: z.object({
-            content: z.array(
-              z.object({
-                id: z.string(),
-                name: z.string(),
-                slug: z.string(),
-                description: z.string(),
-                avatarUrl: z.string().nullable(),
-                createdAt: z.date(),
-                updatedAt: z.date(),
-                ownerId: z.string(),
-                organizationId: z.string(),
-              })
-            ),
+            content: z.array(projectsSchema),
           }),
         },
       },

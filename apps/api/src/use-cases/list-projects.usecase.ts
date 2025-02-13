@@ -1,7 +1,8 @@
-import type { Project } from '@prisma/client';
-
 import { ResourceNotFoundError } from '@/errors/resource-not-found.error';
-import type { IProjectsRepository } from '@/repositories/interfaces/projects.interface';
+import type {
+  IProjectsRepository,
+  ProjectDTO,
+} from '@/repositories/interfaces/projects.interface';
 import { PrismaProjectsRepository } from '@/repositories/prisma/prisma-projects.repository';
 
 interface ListProjectsUseCaseRequest {
@@ -9,7 +10,7 @@ interface ListProjectsUseCaseRequest {
 }
 
 interface ListProjectsUseCaseResponse {
-  projects: Project[];
+  projects: ProjectDTO[];
 }
 
 class ListProjectsUseCase {

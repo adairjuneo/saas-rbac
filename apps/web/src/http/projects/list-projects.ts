@@ -15,6 +15,11 @@ interface ListProjectsResponse {
     updatedAt: string;
     ownerId: string;
     organizationId: string;
+    owner: {
+      id: string;
+      name: string | null;
+      avatarUrl: string | null;
+    };
   }[];
 }
 
