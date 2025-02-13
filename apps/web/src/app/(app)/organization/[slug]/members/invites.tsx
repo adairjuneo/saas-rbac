@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 
 import { getListInvitesNewMembers } from './actions';
+import { CreateInviteForm } from './create-invite-form';
 import { RevokeInviteButton } from './revoke-invite-button';
 
 export default async function InvitesMembers() {
@@ -20,7 +21,9 @@ export default async function InvitesMembers() {
           <CardHeader>
             <CardTitle>Invite member</CardTitle>
           </CardHeader>
-          <CardContent>Content to invite a member</CardContent>
+          <CardContent>
+            <CreateInviteForm />
+          </CardContent>
         </Card>
       )}
 

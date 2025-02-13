@@ -1,5 +1,6 @@
 'use server';
 
+import { roleSchema } from '@saas-rbac/auth';
 import { HTTPError } from 'ky';
 import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
@@ -7,6 +8,7 @@ import { z } from 'zod';
 
 import { listInvitesMembers } from '@/http/invites/list-invites';
 import { revokeInvite } from '@/http/invites/revoke-invite';
+import { sendNewInvite } from '@/http/invites/send-new-invite';
 import { listMembers } from '@/http/members/list-members';
 import { removeMember } from '@/http/members/remove-member';
 import { updateMember } from '@/http/members/update-member';
@@ -178,6 +180,58 @@ export const revokeInviteForThisOrganization = async (data: FormData) => {
 
   try {
     await revokeInvite({ orgSlug, inviteId });
+    revalidateTag(String(orgSlug).concat('/list-invites'));
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      const { message } = await error.response.json();
+
+      return { success: false, message, errors: null };
+    }
+
+    console.error(error);
+
+    return {
+      success: false,
+      message: 'Unexpected error, try in a few minutes.',
+      errors: null,
+    };
+  }
+
+  return { success: true, message: null, errors: null };
+};
+
+const sendNewInviteSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'Field is required.' })
+    .email({ message: 'Provide a valid e-mail address.' }),
+  role: roleSchema,
+});
+
+export const sendNewInviteForThisOrganization = async (data: FormData) => {
+  const cookiesStore = await cookies();
+  const orgSlug = cookiesStore.get('org')?.value ?? null;
+
+  if (!orgSlug) {
+    return {
+      success: false,
+      message: 'Need to provide the organization slug to send the invite.',
+      errors: null,
+    };
+  }
+
+  const result = sendNewInviteSchema.safeParse(Object.fromEntries(data));
+
+  if (!result.success) {
+    const errors = result.error.flatten().fieldErrors;
+
+    return { success: false, message: null, errors };
+  }
+
+  const { email, role } = result.data;
+
+  try {
+    await sendNewInvite({ orgSlug, email, role });
     revalidateTag(String(orgSlug).concat('/list-invites'));
   } catch (error) {
     if (error instanceof HTTPError) {
