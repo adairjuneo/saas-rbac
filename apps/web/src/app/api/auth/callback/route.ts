@@ -2,9 +2,11 @@ import { cookies } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { signInWithGitHub } from '@/http/auth/sign-in-with-github';
+import { acceptInvite } from '@/http/invites/accept-invite';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
+  const cookiesStore = await cookies();
 
   const code = searchParams.get('code');
 
@@ -17,10 +19,17 @@ export async function GET(request: NextRequest) {
 
   const { content } = await signInWithGitHub({ code });
 
-  (await cookies()).set('token', content.token, {
+  cookiesStore.set('token', content.token, {
     path: '/',
     maxAge: 60 * 60 * 24 * 3, // 3 Days
   });
+
+  const inviteId = cookiesStore.get('inviteId')?.value;
+
+  if (inviteId) {
+    await acceptInvite({ inviteId });
+    cookiesStore.delete('inviteId');
+  }
 
   const redirectUrl = request.nextUrl.clone();
 

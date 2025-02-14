@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { z } from 'zod';
 
 import { signInWithPassword } from '@/http/auth/sign-in-with-password';
+import { acceptInvite } from '@/http/invites/accept-invite';
 
 const signInSchema = z.object({
   email: z
@@ -16,6 +17,7 @@ const signInSchema = z.object({
 
 export const signInWithEmailAndPassword = async (data: FormData) => {
   const result = signInSchema.safeParse(Object.fromEntries(data));
+  const cookiesStore = await cookies();
 
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors;
@@ -32,6 +34,13 @@ export const signInWithEmailAndPassword = async (data: FormData) => {
       path: '/',
       maxAge: 60 * 60 * 24 * 3, // 3 Days
     });
+
+    const inviteId = cookiesStore.get('inviteId')?.value;
+
+    if (inviteId) {
+      await acceptInvite({ inviteId });
+      cookiesStore.delete('inviteId');
+    }
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = await error.response.json();
