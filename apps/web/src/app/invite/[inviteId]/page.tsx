@@ -1,6 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
-import { CheckCircle, LogIn } from 'lucide-react';
+import { CheckCircle, LogIn, LogOut } from 'lucide-react';
 import { cookies } from 'next/headers';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { getUserAuth, userAuthenticated } from '@/auth/get-user-auth';
@@ -109,6 +110,34 @@ export default async function InvitePage({ params }: InvitePageParams) {
               Join {invite.organization?.name}
             </Button>
           </form>
+        )}
+
+        {isUserAuthenticated && !userAuthenticatedIsTheSameFromInvite && (
+          <div className="space-y-4">
+            <p className="text-balance text-center leading-relaxed text-muted-foreground">
+              This invite was send to{' '}
+              <span className="font-medium text-foreground">
+                {invite.email}
+              </span>{' '}
+              but you are currently authenticated as{' '}
+              <span className="font-medium text-foreground">
+                {currentUserEmail}
+              </span>
+            </p>
+
+            <div className="space-y-2">
+              <Button asChild className="w-full" variant="secondary">
+                <a href="/api/auth/sign-out">
+                  <LogOut className="size-4" />
+                  Sign out from {currentUserEmail}
+                </a>
+              </Button>
+
+              <Button asChild className="w-full" variant="outline">
+                <Link href="/">Back to dashboard</Link>
+              </Button>
+            </div>
+          </div>
         )}
       </div>
     </main>
