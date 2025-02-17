@@ -108,6 +108,13 @@ export class PrismaInvitesRepository implements IInvitesRepository {
             avatarUrl: true,
           },
         },
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            avatarUrl: true,
+          },
+        },
       },
       orderBy: {
         createdAt: 'desc',

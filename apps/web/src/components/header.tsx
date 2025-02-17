@@ -6,6 +6,7 @@ import appLogo from '@/assets/app-logo.svg';
 import { getUserAbility } from '@/auth/user-membership';
 
 import { OrganizationSwitcher } from './organization-switcher';
+import PedingInvites from './pending-invites';
 import { ProfileButton } from './profile-button';
 import { ProjectSwitcher } from './project-switcher';
 import { ThemeSwitcher } from './theme-switcher';
@@ -32,6 +33,7 @@ export const Header = async () => {
       </div>
 
       <div className="flex items-center gap-4">
+        <PedingInvites />
         <ThemeSwitcher />
         <Separator orientation="vertical" className="h-5" />
         <ProfileButton />

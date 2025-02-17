@@ -12,7 +12,9 @@ interface ListOrganizationsResponse {
 export const listOrganizations =
   async (): Promise<ListOrganizationsResponse> => {
     const result = await api
-      .get('organizations/list-organizations')
+      .get('organizations/list-organizations', {
+        next: { tags: ['list-organizations'] },
+      })
       .json<ListOrganizationsResponse>();
 
     return result;
