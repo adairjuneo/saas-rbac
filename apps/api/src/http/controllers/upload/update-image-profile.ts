@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 import { BadRequestError } from '@/errors/bad-request.error';
 import { env } from '@/lib/env';
-import { r2 } from '@/lib/r2';
+import { getSignedUrlAccess, r2 } from '@/lib/r2';
 
 const fileMimeTypeSchema = z.object({
   mimeType: z
@@ -23,7 +23,7 @@ const fileMimeTypeSchema = z.object({
 const fileMaxSizeSchema = z.object({
   maxSize: z
     .number()
-    .max(5 * 1024 * 1024, { message: 'Image file must have a max size 5MB.' }),
+    .max(1024 * 1024 * 5, { message: 'Image file must have a max size 5MB.' }),
 });
 
 export const updateImageProfile = async (app: FastifyInstance) => {
@@ -37,6 +37,7 @@ export const updateImageProfile = async (app: FastifyInstance) => {
           200: z.object({
             content: z.object({
               fileKey: z.string(),
+              url: z.string().url(),
             }),
           }),
         },
@@ -67,6 +68,7 @@ export const updateImageProfile = async (app: FastifyInstance) => {
         const fileKey = String(userId)
           .concat('/')
           .concat(randomUUID())
+          .concat('-')
           .concat(data.filename);
 
         const uploadCommand = new PutObjectCommand({
@@ -78,7 +80,9 @@ export const updateImageProfile = async (app: FastifyInstance) => {
 
         await r2.send(uploadCommand);
 
-        reply.status(200).send({ content: { fileKey } });
+        const url = await getSignedUrlAccess({ fileKey });
+
+        reply.status(200).send({ content: { fileKey, url } });
       } catch (error) {
         request.log.error(error);
         throw new BadRequestError(
