@@ -1,5 +1,6 @@
 import fastifyCors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
+import fastifyMultipart from '@fastify/multipart';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import chalk from 'chalk';
@@ -54,6 +55,13 @@ app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
   sign: {
     expiresIn: '3d',
+  },
+});
+
+// Multipart to upload files
+app.register(fastifyMultipart, {
+  limits: {
+    fileSize: 1 * 1024 * 1024 * 1024, // 1 Gb Max File Size
   },
 });
 
